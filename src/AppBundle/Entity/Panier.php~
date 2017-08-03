@@ -1,0 +1,236 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Panier
+ *
+ * @ORM\Table(name="panier")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PanierRepository")
+ */
+class Panier
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Billet", mappedBy="panier", cascade={"persist"})
+     */
+    private $billets;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCommande", type="datetime")
+     */
+    private $dateCommande;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateVisite", type="datetime")
+     */
+    private $dateVisite;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbBillets", type="smallint")
+     */
+    private $nbBillets;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="billetJour", type="boolean")
+     */
+    private $billetJour;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="total", type="smallint")
+     */
+    private $total;
+
+
+    public function __construct(){
+        $this->dateCommande = new DateTime();
+        $this->billets = new ArrayCollection();
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set dateCommande
+     *
+     * @param \DateTime $dateCommande
+     *
+     * @return Panier
+     */
+    public function setDateCommande($dateCommande)
+    {
+        $this->dateCommande = $dateCommande;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCommande
+     *
+     * @return \DateTime
+     */
+    public function getDateCommande()
+    {
+        return $this->dateCommande;
+    }
+
+    /**
+     * Set dateVisite
+     *
+     * @param \DateTime $dateVisite
+     *
+     * @return Panier
+     */
+    public function setDateVisite($dateVisite)
+    {
+        $this->dateVisite = $dateVisite;
+
+        return $this;
+    }
+
+    /**
+     * Get dateVisite
+     *
+     * @return \DateTime
+     */
+    public function getDateVisite()
+    {
+        return $this->dateVisite;
+    }
+
+    /**
+     * Set nbBillets
+     *
+     * @param integer $nbBillets
+     *
+     * @return Panier
+     */
+    public function setNbBillets($nbBillets)
+    {
+        $this->nbBillets = $nbBillets;
+
+        return $this;
+    }
+
+    /**
+     * Get nbBillets
+     *
+     * @return int
+     */
+    public function getNbBillets()
+    {
+        return $this->nbBillets;
+    }
+
+    /**
+     * Set total
+     *
+     * @param integer $total
+     *
+     * @return Panier
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set billetJour
+     *
+     * @param boolean $billetJour
+     *
+     * @return Panier
+     */
+    public function setBilletJour($billetJour)
+    {
+        $this->billetJour = $billetJour;
+
+        return $this;
+    }
+
+    /**
+     * Get billetJour
+     *
+     * @return boolean
+     */
+    public function getBilletJour()
+    {
+        return $this->billetJour;
+    }
+
+    /**
+     * Add billet
+     *
+     * @param \AppBundle\Entity\Billet $billet
+     *
+     * @return Panier
+     */
+    public function addBillet(\AppBundle\Entity\Billet $billet)
+    {
+        $this->billets[] = $billet;
+
+        return $this;
+    }
+
+    /**
+     * Remove billet
+     *
+     * @param \AppBundle\Entity\Billet $billet
+     */
+    public function removeBillet(\AppBundle\Entity\Billet $billet)
+    {
+        $this->billets->removeElement($billet);
+    }
+
+    /**
+     * Get billets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBillets()
+    {
+        return $this->billets;
+    }
+}

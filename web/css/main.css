@@ -1,0 +1,37 @@
+.picker__date-display{
+    background-color: #616161 !important;
+}
+.picker__day.picker__day--today{
+    color: #dd2c00;
+}
+.btn-flat{
+    color: black;
+    background-color: transparent;
+}
+button.picker__close:focus {
+    background-color: #ff9e80;
+}
+.dropdown-content li > a, .dropdown-content li > span{
+    color: #dd2c00;
+}
+
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #dd2c00;
+    -webkit-box-shadow: 0 1px 0 0 #dd2c00;
+    box-shadow: 0 1px 0 0 #dd2c00;
+}
+.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
+    background-color: #dd2c00;
+}

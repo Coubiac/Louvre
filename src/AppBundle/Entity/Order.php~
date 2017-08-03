@@ -1,0 +1,90 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Validator\Constraints as LouvreAssert;
+
+/**
+ * Order
+ *
+ * @ORM\Table(name="order")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderRepository")
+ */
+class Order
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     * @ORM\Column(name="order_number", type="string")
+     */
+    private $orderNumber;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Ticket", mappedBy="order", cascade={"persist"})
+     */
+    private $tickets;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="order_date", type="datetime")
+     */
+    private $orderDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_of_visit", type="datetime")
+     * @Assert\DateTime()
+     * @Assert\NotNull(message="Veuillez sélectionner une date.")
+     * @Assert\GreaterThanOrEqual("today", message="Veuillez choisir une date valide.")
+     * @LouvreAssert\IsNotHolliday()
+     * @LouvreAssert\IsNotClosingDay()
+     */
+    private $dateOfVisit;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="full_day_ticket", type="boolean")
+     */
+    private $fullDayTicket;
+
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="total", type="smallint")
+     */
+    private $total;
+
+
+    public function __construct(){
+        $this->orderId = uniqid("CMD");
+        $this->orderDate = new DateTime();
+        $this->tickets = new ArrayCollection();
+    }
+
+}

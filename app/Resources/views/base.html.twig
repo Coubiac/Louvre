@@ -3,11 +3,28 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <!--Import Google Icon Font-->
+{% include 'assets/css.html.twig' %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <body class="grey darken-4">
+    <div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper black">
+            <a href="#!" class="brand-logo center"><img src="{{ asset("img/logo.jpg") }}" </a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#">English version</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="#">English version</a></li>
+            </ul>
+        </div>
+    </nav>
+    </div>
+        {% block body %}
+
+        {% endblock %}
+{% include 'assets/js.html.twig' %}
     </body>
 </html>
