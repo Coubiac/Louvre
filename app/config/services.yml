@@ -38,13 +38,6 @@ services:
         public: true
         class: 'AppBundle\Services\PriceCalculator\PriceCalculator'
 
-    app.notification:
-        public: true
-        class: AppBundle\Services\Notification\Notification
-        arguments:
-            - "@mailer"
-            - "@twig"
-            - "@doctrine.orm.entity_manager"
 
     PaymentManager:
             public: true

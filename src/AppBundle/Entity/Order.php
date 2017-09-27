@@ -49,6 +49,7 @@ class Order
      * @Assert\GreaterThanOrEqual("today", message="Please enter a valid date.")
      * @LouvreAssert\IsNotHolliday()
      * @LouvreAssert\IsNotClosingDay()
+     * @LouvreAssert\IsFullDay()
      */
     private $dateOfVisit;
 
