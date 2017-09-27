@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Ticket;
+
 /**
  * PanierRepository
  *
@@ -10,5 +12,25 @@ namespace AppBundle\Repository;
  */
 class OrderRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findUnavailableDate(){
+
+        $limit = Ticket::MAX_TICKETS;
+
+        $query =
+            $this->createQueryBuilder('o')
+                ->innerJoin('o.tickets', 't')
+                ->select('o.dateOfVisit')
+                ->groupBy('o.dateOfVisit')
+                ->having('COUNT(t) >= :limit')
+                ->setParameter('limit', $limit);
+        $result = $query->getQuery()->getArrayResult();
+
+
+        return array_map(function($row)
+        {
+            return $row['dateOfVisit'];
+        },$result);
+
+    }
 
 }

@@ -30,7 +30,7 @@ class Ticket
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="tickets", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="tickets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $order;
@@ -57,6 +57,12 @@ class Ticket
      */
     private $birthdate;
 
+    /**
+     * @var int
+     * @ORM\Column(name="price", type="integer")
+     */
+    private $price;
+
 
     /**
      * @var string
@@ -68,6 +74,7 @@ class Ticket
      * Ticket constructor.
      */
     public function __construct(){
+        $this->setTicketNumber(md5(uniqid(rand(), true)));
 
 
     }
@@ -202,5 +209,29 @@ class Ticket
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Set ticketNumber
+     *
+     * @param string $ticketNumber
+     *
+     * @return Ticket
+     */
+    public function setTicketNumber($ticketNumber)
+    {
+        $this->ticketNumber = $ticketNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketNumber
+     *
+     * @return string
+     */
+    public function getTicketNumber()
+    {
+        return $this->ticketNumber;
     }
 }

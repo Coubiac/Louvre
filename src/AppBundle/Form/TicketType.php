@@ -31,7 +31,7 @@ class TicketType extends AbstractType
             ->add('birthdate', DateType::class, array(
         'widget' => 'single_text',
         'html5' => true,
-        'attr' => array('class' => 'birthdate', 'min' => date('Y-m-d')),
+        'attr' => array('class' => 'birthdate', 'max' => date('Y-m-d')),
         'format' => 'yyyy-MM-dd',
     ));
     }

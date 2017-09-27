@@ -530,24 +530,8 @@
             if (code !== undefined && settings.fade_in) {
                 code.fadeIn('fast');
             }
-            $('select').material_select();
-            $('.select-dropdown').val('');
-            //Datepicker pour date de Naissance
-            $('.birthdate').pickadate({
-                selectMonths: true, // Creates a dropdown to control month
-                selectYears: 100,
-                format: 'yyyy-mm-dd',
-                today: 'Today',
-                clear: 'Clear',
-                close: 'Ok',
-                max: new Date(),
-                firstDay: 1,
-                closeOnSelect: false,
-            });
 
             return elements;
-
-
         };
 
         // removes the current element when clicking on a "delete" button and decrease all following

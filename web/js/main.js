@@ -1,9 +1,35 @@
-$(document).ready(function() {
+function getfulldays() {
+    var route = Routing.generate('findunavailabledates');
+    var dates = [];
+    $.ajax({
+        async: false,
+        type: "GET",
+        url: route,
+        dataType: "json",
+        success: function (response) {
+
+            for (var i = 0; i < response.length; i++) {
+                var date = new Date(response[i] * 1000);
+
+                dates.push([date.getFullYear(), date.getMonth(), date.getDate()]);
+            }
+        }
+    });
+    return dates;
+}
+
+$(document).ready(function () {
+    var fulldays = getfulldays();
+    var closedDays = GetHollidays();
+    var hollidays = closedDays.concat(fulldays);
     //-------------------------------------------
     //Material Design
     $('.parallax').parallax();
     $('select').material_select();
-    var hollidays = GetHollidays();
+
+
+
+
     $('.select-dropdown').val('');
 
     //Datepicker pour date de visite
@@ -17,17 +43,28 @@ $(document).ready(function() {
         min: new Date(),
         firstDay: 1,
         closeOnSelect: false,
-        disable: hollidays
-    });
+        onSet: function (context) {
+            var route = Routing.generate('countavailabletickets', {'timestamp': context.select});
+            $.get(route,
+                function (response) {
+                if(response < 1000){
+                    alert('Attention ! il ne reste que ' + response + ' tickets à cette date !')
+                }
+                    $('.ticketform').collection({
+                        min: 1,
+                        max: response,
+                        init_with_n_elements: 1,
+                        hide_useless_buttons: true,
+                        allow_up: false,
+                        prototype_name: '__name__',
+                        name_prefix: '',
+                        allow_down: false
+                    });
 
-    $('.ticketform').collection({
-        min: 1,
-        init_with_n_elements: 1,
-        hide_useless_buttons: true,
-        allow_up: false,
-        prototype_name: '__name__',
-        name_prefix:  '',
-        allow_down: false
+
+                }, "json");
+        },
+        disable: hollidays
     });
 
 
@@ -35,8 +72,7 @@ $(document).ready(function() {
 });
 
 
-
-function Easter( y ) // Takes a given year (y) then returns Date object of Easter Sunday
+function Easter(y) // Takes a given year (y) then returns Date object of Easter Sunday
 {
     /*
      Easter Date Function for JavaScript implemented by Furgelnod ( https://furgelnod.com )
@@ -47,30 +83,32 @@ function Easter( y ) // Takes a given year (y) then returns Date object of Easte
      See Chapter 12, "Calendars", by L. E. Doggett.
      */
     try {
-        y = Number( y );
-        if ( y != y ) {
-            throw new TypeError( "Value must be a number." );
+        y = Number(y);
+        if (y != y) {
+            throw new TypeError("Value must be a number.");
         }
-        else if ( y > 275760 || y < -271820 ) {
-            throw new RangeError( "Value be between -271820 and 275760 due to technical limitations of Date constructor." );
+        else if (y > 275760 || y < -271820) {
+            throw new RangeError("Value be between -271820 and 275760 due to technical limitations of Date constructor.");
         }
     }
-    catch ( e ) { console.error( e ); }
+    catch (e) {
+        console.error(e);
+    }
 
-    y = Math.floor( y );
-    var c = Math.floor( y / 100 );
-    var n = y - 19 * Math.floor( y / 19 );
-    var k = Math.floor( ( c - 17 ) / 25 );
-    var i = c - Math.floor( c / 4 ) - Math.floor( ( c - k ) / 3 ) + 19 * n + 15;
-    i = i - 30 * Math.floor( i / 30 );
-    i = i - Math.floor( i / 28 ) * ( 1 - Math.floor( i / 28 ) * Math.floor( 29 / ( i + 1 ) ) * Math.floor( ( 21 - n ) / 11 ) );
-    var j = y + Math.floor( y / 4 ) + i + 2 - c + Math.floor( c / 4 );
-    j = j - 7 * Math.floor( j / 7 );
+    y = Math.floor(y);
+    var c = Math.floor(y / 100);
+    var n = y - 19 * Math.floor(y / 19);
+    var k = Math.floor(( c - 17 ) / 25);
+    var i = c - Math.floor(c / 4) - Math.floor(( c - k ) / 3) + 19 * n + 15;
+    i = i - 30 * Math.floor(i / 30);
+    i = i - Math.floor(i / 28) * ( 1 - Math.floor(i / 28) * Math.floor(29 / ( i + 1 )) * Math.floor(( 21 - n ) / 11) );
+    var j = y + Math.floor(y / 4) + i + 2 - c + Math.floor(c / 4);
+    j = j - 7 * Math.floor(j / 7);
     var l = i - j;
-    var m = 3 + Math.floor( ( l + 40 ) / 44 );
-    var d = l + 28 - 31 * Math.floor( m / 4 );
+    var m = 3 + Math.floor(( l + 40 ) / 44);
+    var d = l + 28 - 31 * Math.floor(m / 4);
     var z = new Date();
-    z.setFullYear( y, m-1, d );
+    z.setFullYear(y, m - 1, d);
     return z;
 } // -- easterDate
 
@@ -84,19 +122,19 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
     // DATES VARIABLES
     function easterMonday(year) {     //Lundi de Paques
         var easter = Easter(year);
-        var easterMonday = new Date(easter.getTime()+(24*60*60*1000));
+        var easterMonday = new Date(easter.getTime() + (24 * 60 * 60 * 1000));
 
-        return [easterMonday.getFullYear() , easterMonday.getMonth(),easterMonday.getDate()];
+        return [easterMonday.getFullYear(), easterMonday.getMonth(), easterMonday.getDate()];
     }
 
     var easterMondays = [easterMonday(year), easterMonday(year + 1), easterMonday(year + 2)];
 
     function pentecostMonday(year) {    //Lundi de Pentecôte
         var easter = Easter(year);
-        var pentecostMonday = new Date(easter.getTime()+(50*24*60*60*1000));
+        var pentecostMonday = new Date(easter.getTime() + (50 * 24 * 60 * 60 * 1000));
 
 
-        return [pentecostMonday.getFullYear(),pentecostMonday.getMonth(),pentecostMonday.getDate()];
+        return [pentecostMonday.getFullYear(), pentecostMonday.getMonth(), pentecostMonday.getDate()];
 
     }
 
@@ -105,27 +143,31 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
     function ascent(year) {    //Jeudi de l'acencion
         var easter = Easter(year);
 
-        var ascent = new Date(easter.getTime()+(39*24*60*60*1000));
+        var ascent = new Date(easter.getTime() + (39 * 24 * 60 * 60 * 1000));
 
-        return [ascent.getFullYear(),ascent.getMonth(),ascent.getDate()];
+        return [ascent.getFullYear(), ascent.getMonth(), ascent.getDate()];
     }
 
     var ascents = [ascent(year), ascent(year + 1), ascent(year + 2)];
 
     // Dates Fixes
-    var year1 = year +1;
-    var year2 = year +2;
-    var newYearDays = [[year,0,1], [year1,0,1], [year2,0,1]];
-    var laborDays = [[year,4,1], [year1,4,1], [year2,1,1]];
-    var ww2Victorys = [[year,4,8], [year1,4,8], [year2,4,8]];
-    var july14ths = [[year,6,14], [year1,6,14], [year2,6,14]];
-    var assumptions = [[year,7,15], [year1,7,15], [year2,7,15]];
-    var toussaints = [[year,10,1], [year1,10,1], [year2,10,1]];
-    var ww1Victorys = [[year,10,11], [year1,10,11], [year2,10,11]];
-    var christmas = [[year,11,25], [year1,11,25], [year2,11,25]];
+    var year1 = year + 1;
+    var year2 = year + 2;
+    var newYearDays = [[year, 0, 1], [year1, 0, 1], [year2, 0, 1]];
+    var laborDays = [[year, 4, 1], [year1, 4, 1], [year2, 1, 1]];
+    var ww2Victorys = [[year, 4, 8], [year1, 4, 8], [year2, 4, 8]];
+    var july14ths = [[year, 6, 14], [year1, 6, 14], [year2, 6, 14]];
+    var assumptions = [[year, 7, 15], [year1, 7, 15], [year2, 7, 15]];
+    var toussaints = [[year, 10, 1], [year1, 10, 1], [year2, 10, 1]];
+    var ww1Victorys = [[year, 10, 11], [year1, 10, 11], [year2, 10, 11]];
+    var christmas = [[year, 11, 25], [year1, 11, 25], [year2, 11, 25]];
+
 
     //Jours de Fermetures Hebdomadaires
-    var closedDays = [0, 2];
+    //var closedDays = [0, 2];
+
+    //Jours Complets
+
 
 
     var hollidayarray = easterMondays.concat(
@@ -138,12 +180,15 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
         assumptions,
         toussaints,
         ww1Victorys,
-        christmas,
-        closedDays);
+        christmas);
 
+
+    //hollidayarray.push(0,2);
 
     return hollidayarray;
 
 
 }
+
+
 

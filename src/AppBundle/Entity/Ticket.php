@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ticket
 {
+
+    const MAX_TICKETS = 3; //Maximum tickets allowed in a day
+
     /**
      * @var int
      *
@@ -56,6 +59,12 @@ class Ticket
      * @ORM\Column(name="birthdate", type="datetime")
      */
     private $birthdate;
+
+    /**
+     * @var int
+     * @ORM\Column(name="price", type="integer")
+     */
+    private $price;
 
 
     /**
@@ -227,5 +236,29 @@ class Ticket
     public function getTicketNumber()
     {
         return $this->ticketNumber;
+    }
+
+    /**
+     * Set price
+     *
+     * @param integer $price
+     *
+     * @return Ticket
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return integer
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 }

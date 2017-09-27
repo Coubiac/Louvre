@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('img/parallax1.jpg') }}"></div>
+    </div>
+    <div class="section grey darken-4 grey-text text-lighten-5">
+        <div class="row container">
+            <h2 class="header">
+                Order summary </h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Born</th>
+                    <th>Nationality</th>
+                    <th>Item Price</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for ticket in order.tickets %}
+                <tr>
+                    <td>{{ ticket.firstname }}</td>
+                    <td>{{ ticket.lastname }}</td>
+                    <td>{{ ticket.birthdate|ago }}</td>
+                    <td></td>
+                    <td>{{ ticket.price }}</td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <form action="{{ path('payment') }}" method="POST">
+                <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="{{ stripePublishableKey }}"
+                        data-amount="{{ order.total * 100 }}"
+                        data-label="Checkout"
+                        data-name="Louvre Museum"
+                        data-description="Ticket order"
+                        data-locale="auto"
+                        data-allow-remember-me="false"
+                        data-email="{{ order.email }}"
+                        data-currency="eur">
+                </script>
+            </form>
+
+        </div>
+
+    </div>
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('img/parallax2.jpg') }}"></div>
+    </div>
+
+{% endblock %}

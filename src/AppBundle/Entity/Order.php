@@ -84,6 +84,8 @@ class Order
      */
     private $total;
 
+
+
     /**
      * Order constructor.
      */
@@ -259,6 +261,7 @@ class Order
     public function addTicket(\AppBundle\Entity\Ticket $ticket)
     {
         $this->tickets[] = $ticket;
+        $ticket->setOrder($this);
 
         return $this;
     }

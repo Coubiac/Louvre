@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -37,6 +37,11 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+      - 'assets/materialize_form_theme.html.twig'
+      - 'assets/jquery.collection.html.twig'
+    globals:
+        stripePublishableKey: '%stripePublishableKey%'
 
 # Doctrine Configuration
 doctrine:
@@ -67,3 +72,6 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+fos_js_routing:
+    routes_to_expose: [ myBundle_step2, myBundle_step3, ... ]

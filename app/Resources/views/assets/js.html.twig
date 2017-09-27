@@ -4,9 +4,13 @@
             <!-- Compiled and minified JavaScript jQuery -->
 
             <!-- Compiled and minified JavaScript Materialize -->
-            <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+            <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+            <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
             <script type="text/javascript" src="{{ asset("js/materialize.js") }}"></script>
-     <script type="text/javascript" src="{{ asset('js/jquery.collection.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/jquery.collection.js') }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
             <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 
 

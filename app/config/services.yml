@@ -17,6 +17,7 @@ services:
     # makes classes in src/AppBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     AppBundle\:
+        public: false
         resource: '../../src/AppBundle/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
@@ -33,4 +34,22 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    PriceCalculator:
+        public: true
+        class: 'AppBundle\Services\PriceCalculator\PriceCalculator'
+
+    app.notification:
+        public: true
+        class: AppBundle\Services\Notification\Notification
+        arguments:
+            - "@mailer"
+            - "@twig"
+            - "@doctrine.orm.entity_manager"
+
+    PaymentManager:
+            public: true
+            class: 'AppBundle\Services\PaymentManager\PaymentManager'
+            arguments: ["%stripeSecretKey%"]
+
+
 

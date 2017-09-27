@@ -1,0 +1,124 @@
+<?php
+
+namespace AppBundle\Controller;
+
+use AppBundle\Entity\Order;
+use AppBundle\Form\OrderType;
+
+use AppBundle\Services\Notification\Notification;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+
+class OrderController extends Controller
+{
+    /**
+     * @Route("/", name="index")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param SessionInterface $session
+     * @return Response
+     */
+    public function indexAction(Request $request, SessionInterface $session)
+    {
+        $order = new Order();
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->get('priceCalculator')->setTotalPrice($order);
+            $session->set('order', $order);
+
+            return $this->render('default/summary.html.twig', array(
+                'order' => $order));
+        }
+        return $this->render('default/index.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/payment", name="payment")
+     * @Method({"POST"})
+     * @param Request $request
+     * @param SessionInterface $session
+     * @param Notification $notification
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function paymentAction(Request $request, SessionInterface $session, Notification $notification)
+    {
+
+        $paymentManager = $this->get('paymentManager');
+        $order = $session->get('order');
+        if ( $paymentManager->checkoutAction($order, $request)){
+            $notification->sendConfirmationAction($order);
+            foreach ($order->getTickets() as $ticket){
+                $ticket->setOrder($order);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->flush();
+            return $this->render('default/confirmation.html.twig', array(
+                'order' => $order));
+        }
+        return $this->redirectToRoute('index');
+    }
+
+
+    /**
+     * @Route("/findunavailabedates", name="findunavailabledates")
+     * @Method({"GET"})
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function findUnavailableDatesAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $unavailableDates = $this->getDoctrine()->getRepository('AppBundle:Order')->findUnavailableDate();
+            $response = array();
+            foreach ($unavailableDates as $date) {
+                $date = $date->getTimestamp();
+                array_push($response, $date);
+            }
+
+            return new JsonResponse($response);
+        }
+        else{
+            return new Response("Error: This is not an ajax Request", 400);
+        }
+
+
+
+    }
+
+    /**
+     * @Route("/countavailabletickets/{timestamp}", name="countavailabletickets")
+     * @Method({"GET"})
+     * @param Request $request
+     * @param $timestamp
+     * @return JsonResponse|Response
+     */
+    public function countAvailableTicketAction(Request $request, $timestamp)
+    {
+       if($request->isXmlHttpRequest()) {
+            $date = date('Y-m-d 00:00:00', ($timestamp / 1000));
+            $availableTickets = $this->getDoctrine()->getRepository('AppBundle:Ticket')->countAvailableTickets($date);
+
+            return new JsonResponse($availableTickets);
+      }
+        else
+            {
+            return new Response("Error: This is not an ajax Request", 400);
+        }
+
+
+
+    }
+
+
+}
