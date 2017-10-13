@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Ticket;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * PanierRepository
@@ -15,14 +16,16 @@ class OrderRepository extends \Doctrine\ORM\EntityRepository
     public function findUnavailableDate(){
 
         $limit = Ticket::MAX_TICKETS;
+        $today = new \Datetime(date('Y-m-d'));
 
         $query =
             $this->createQueryBuilder('o')
                 ->innerJoin('o.tickets', 't')
                 ->select('o.dateOfVisit')
+                ->where('o.dateOfVisit >= :today')
                 ->groupBy('o.dateOfVisit')
                 ->having('COUNT(t) >= :limit')
-                ->setParameter('limit', $limit);
+                ->setParameters(array(':today' => $today, ':limit' => $limit));
         $result = $query->getQuery()->getArrayResult();
 
 

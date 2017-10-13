@@ -2,6 +2,7 @@
 
 namespace AppBundle\Validator\Constraints;
 
+use AppBundle\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -16,13 +17,19 @@ class IsNotFullDayValidator extends ConstraintValidator
     {
         $this->em = $em;
     }
-    public function validate($date, Constraint $constraint)
+
+    /**
+     * @param Order $order
+     * @param Constraint $constraint
+     */
+    public function validate($order, Constraint $constraint)
     {
-        $availableTickets = $this->em->getRepository('AppBundle:Ticket')->countAvailableTickets($date);
-        if ($availableTickets <= 0)
+        $availableTickets = $this->em->getRepository('AppBundle:Ticket')->countAvailableTickets($order->getDateOfVisit());
+        if ($availableTickets < $order->getTickets()->count())
         {
             $this->context
                 ->buildViolation($constraint->messageMaxTicket)
+                ->atPath('dateOfVisit')
                 ->addViolation();
         }
     }

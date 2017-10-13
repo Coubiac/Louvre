@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,6 +17,7 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder->add('reducedPrice', ChoiceType::class, array(
 
             'choices' => array(
@@ -28,11 +30,15 @@ class TicketType extends AbstractType
             'required' => true))
             ->add('lastname', TextType::class)
             ->add('firstname', TextType::class)
+            ->add('country', CountryType::class, array('data' => \Locale::getDefault(),
+                'label' => false,
+                'attr' => ['class' => 'select']))
             ->add('birthdate', DateType::class, array(
         'widget' => 'single_text',
-        'html5' => true,
+        'html5' => false,
         'attr' => array('class' => 'birthdate', 'max' => date('Y-m-d')),
-        'format' => 'yyyy-MM-dd',
+        'format' => 'dd/MM/yyyy',
+
     ));
     }
     

@@ -32,7 +32,7 @@ class OrderType extends AbstractType
             ->add('fullDayTicket', ChoiceType::class, array(
                 'choices' => array(
                     'Full day ticket' => true,
-                    'Half day ticket : From 14 hours' => false,
+                    'Half day ticket (From 14 hours)' => false,
                 ),
                 'label' => 'Please, choose a ticket type',
                 'empty_data' => '',
@@ -47,6 +47,7 @@ class OrderType extends AbstractType
                 'allow_delete' => true,
                 'attr' => array(
                     'class' => 'ticketform',
+                    'label' => '',
                 ),
 
 

@@ -6,6 +6,7 @@ use AppBundle\Entity\Order;
 use AppBundle\Form\OrderType;
 
 use AppBundle\Services\Notification\Notification;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,8 +18,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrderController extends Controller
 {
+
     /**
-     * @Route("/", name="index")
+     * @Route("/", name = "index")
      * @Method({"GET", "POST"})
      * @param Request $request
      * @param SessionInterface $session
@@ -31,6 +33,7 @@ class OrderController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
+
             $this->get('priceCalculator')->setTotalPrice($order);
             $session->set('order', $order);
 
@@ -39,6 +42,7 @@ class OrderController extends Controller
         }
         return $this->render('default/index.html.twig', array(
             'form' => $form->createView(),
+            'lang' => $request->getLocale(),
         ));
     }
 
@@ -63,6 +67,7 @@ class OrderController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($order);
             $em->flush();
+
             return $this->render('default/confirmation.html.twig', array(
                 'order' => $order));
         }
@@ -99,25 +104,17 @@ class OrderController extends Controller
     /**
      * @Route("/countavailabletickets/{timestamp}", name="countavailabletickets")
      * @Method({"GET"})
-     * @param Request $request
      * @param $timestamp
      * @return JsonResponse|Response
      */
-    public function countAvailableTicketAction(Request $request, $timestamp)
+    public function countAvailableTicketAction($timestamp)
     {
-       if($request->isXmlHttpRequest()) {
-            $date = date('Y-m-d 00:00:00', ($timestamp / 1000));
+            $date = new DateTime();
+            $date->setTimestamp($timestamp);
+
             $availableTickets = $this->getDoctrine()->getRepository('AppBundle:Ticket')->countAvailableTickets($date);
 
             return new JsonResponse($availableTickets);
-      }
-        else
-            {
-            return new Response("Error: This is not an ajax Request", 400);
-        }
-
-
-
     }
 
 

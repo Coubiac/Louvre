@@ -12,7 +12,7 @@ class IsNotClosingDayValidator extends ConstraintValidator
         $date = $date->format('m/d/Y');
 
         $date = strtotime($date);
-        if (date('w', $date) === 'Sun' || date('w', $date) === 'Tue') {
+        if (date('D', $date) === 'Sun' || date('D', $date) === 'Tue') {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

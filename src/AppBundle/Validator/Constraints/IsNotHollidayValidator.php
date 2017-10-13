@@ -34,7 +34,7 @@ class IsNotHollidayValidator extends ConstraintValidator
             // Dates variables
             mktime(0, 0, 0, $easterMonth, $easterDay + 1, $easterYear), // Lundi de Paques
             mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear), // Ascension
-            mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear), // Pentecôte
+            mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear), // Lundi de Pentecôte
         );
 
         if (in_array($date, $holidays)) {

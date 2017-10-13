@@ -6,15 +6,15 @@
     <div class="section grey darken-4 grey-text text-lighten-5">
         <div class="row container">
             <h2 class="header">
-                Order summary </h2>
+                {{ "Order summary"|trans }}</h2>
             <table>
                 <thead>
                 <tr>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Born</th>
-                    <th>Nationality</th>
-                    <th>Item Price</th>
+                    <th>{{ "Firstname"|trans}}</th>
+                    <th>{{ "Lastname"|trans}}</th>
+                    <th>{{ "Born"|trans}}</th>
+                    <th>{{ "Nationality"|trans}}</th>
+                    <th>{{ "Item Price"|trans}}</th>
                 </tr>
                 </thead>
 
@@ -36,10 +36,12 @@
                         src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                         data-key="{{ stripePublishableKey }}"
                         data-amount="{{ order.total * 100 }}"
-                        data-label="Checkout"
-                        data-name="Louvre Museum"
-                        data-description="Ticket order"
+                        data-image="{{ asset('img/logo-pyramide.png') }}"
+                        data-label="{{ "Checkout"|trans }}"
+                        data-name="{{ "Louvre Museum"|trans }}"
+                        data-description={{"Ticket order"|trans}}
                         data-locale="auto"
+                        data-customer="true"
                         data-allow-remember-me="false"
                         data-email="{{ order.email }}"
                         data-currency="eur">

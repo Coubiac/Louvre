@@ -1,3 +1,9 @@
+
+alert(lang);
+
+
+
+
 function getfulldays() {
     var route = Routing.generate('findunavailabledates');
     var dates = [];
@@ -33,39 +39,96 @@ $(document).ready(function () {
     $('.select-dropdown').val('');
 
     //Datepicker pour date de visite
-    $('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 2,
-        format: 'yyyy-mm-dd',
-        today: 'Today',
-        clear: 'Clear',
-        close: 'Ok',
-        min: new Date(),
-        firstDay: 1,
-        closeOnSelect: false,
-        onSet: function (context) {
-            var route = Routing.generate('countavailabletickets', {'timestamp': context.select});
-            $.get(route,
-                function (response) {
-                if(response < 1000){
-                    alert('Attention ! il ne reste que ' + response + ' tickets à cette date !')
-                }
-                    $('.ticketform').collection({
-                        min: 1,
-                        max: response,
-                        init_with_n_elements: 1,
-                        hide_useless_buttons: true,
-                        allow_up: false,
-                        prototype_name: '__name__',
-                        name_prefix: '',
-                        allow_down: false
-                    });
+    if(lang === "fr"){
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 2,
+            monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+            weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            formatSubmit: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
+            today: 'Aujourd\'hui',
+            clear: 'Effacer',
+            close: 'Ok',
+            min: new Date(),
+            firstDay: 1,
+            closeOnSelect: false,
+            onSet: function (context) {
+                var selectedDate = context.select / 1000;
+                var route = Routing.generate('countavailabletickets', {'timestamp': selectedDate});
+                console.log(context.select);
+                $.ajax({
+                    async: true,
+                    type: "GET",
+                    url: route,
+                    dataType: "json",
+                    success: function (response) {
 
+                        if(response < 1000){
+                            alert('Attention ! il ne reste que ' + response + ' tickets à cette date !')
+                        }
+                        $('.ticketform').collection({
+                            min: 0,
+                            max: response,
+                            init_with_n_elements: 1,
+                            hide_useless_buttons: true,
+                            allow_up: false,
+                            prototype_name: '',
+                            name_prefix: '',
+                            allow_down: false
+                        });
+                        $('select').material_select();
 
-                }, "json");
-        },
-        disable: hollidays
-    });
+                    }
+                });
+            },
+            disable: hollidays
+        });
+
+    }
+    else{
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 2,
+            format: 'yyyy-mm-dd',
+            today: 'Today',
+            clear: 'Clear',
+            close: 'Ok',
+            min: new Date(),
+            firstDay: 1,
+            closeOnSelect: false,
+            onSet: function (context) {
+                var selectedDate = context.select / 1000;
+                var route = Routing.generate('countavailabletickets', {'timestamp': selectedDate});
+                console.log(context.select);
+                $.ajax({
+                    async: true,
+                    type: "GET",
+                    url: route,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if(response < 1000){
+                            alert('Attention ! il ne reste que ' + response + ' tickets à cette date !')
+                        }
+                        $('.ticketform').collection({
+                            min: 0,
+                            max: response,
+                            init_with_n_elements: 1,
+                            hide_useless_buttons: true,
+                            allow_up: false,
+                            prototype_name: '',
+                            name_prefix: '',
+                            allow_down: false
+                        });
+                        $('select').material_select();
+
+                    }
+                });
+            },
+            disable: hollidays
+        });
+    }
 
 
 
@@ -164,7 +227,7 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
 
 
     //Jours de Fermetures Hebdomadaires
-    //var closedDays = [0, 2];
+    var closedDays = [0, 2];
 
     //Jours Complets
 
@@ -180,7 +243,8 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
         assumptions,
         toussaints,
         ww1Victorys,
-        christmas);
+        christmas,
+        closedDays);
 
 
     //hollidayarray.push(0,2);

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Ticket
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Ticket
 {
 
-    const MAX_TICKETS = 3; //Maximum tickets allowed in a day
+    const MAX_TICKETS = 5; //Maximum tickets allowed in a day
 
     /**
      * @var int
@@ -59,6 +60,14 @@ class Ticket
      * @ORM\Column(name="birthdate", type="datetime")
      */
     private $birthdate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255)
+     * @Assert\Country()
+     */
+    private $country;
 
     /**
      * @var int
@@ -260,5 +269,29 @@ class Ticket
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return Ticket
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }

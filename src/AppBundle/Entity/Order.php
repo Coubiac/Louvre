@@ -13,6 +13,7 @@ use AppBundle\Validator\Constraints as LouvreAssert;
  *
  * @ORM\Table(name="visit_order")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderRepository")
+ * @LouvreAssert\IsNotFullDay()
  */
 class Order
 {
@@ -49,7 +50,6 @@ class Order
      * @Assert\GreaterThanOrEqual("today", message="Please enter a valid date.")
      * @LouvreAssert\IsNotHolliday()
      * @LouvreAssert\IsNotClosingDay()
-     * @LouvreAssert\IsFullDay()
      */
     private $dateOfVisit;
 

@@ -5,7 +5,7 @@
     </div>
     <div class="section grey darken-4 grey-text text-lighten-5">
         <div class="row container">
-            <h2 class="header">Book your tickets online</h2>
+            <h2 class="header">{{ "Book your tickets online"|trans }}</h2>
 
             {{ form(form) }}
 
@@ -15,5 +15,8 @@
     <div class="parallax-container">
         <div class="parallax"><img src="{{ asset('img/parallax2.jpg') }}"></div>
     </div>
+    <script>
+        var lang = "{{ lang }}";
+    </script>
 
 {% endblock %}

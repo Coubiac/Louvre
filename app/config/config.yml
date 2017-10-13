@@ -72,6 +72,8 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+    auth_mode: '%mailer_auth_mode%'
+    port: '%mailer_port%'
 
 fos_js_routing:
     routes_to_expose: [ myBundle_step2, myBundle_step3, ... ]

@@ -44,5 +44,8 @@ services:
             class: 'AppBundle\Services\PaymentManager\PaymentManager'
             arguments: ["%stripeSecretKey%"]
 
-
-
+    app.locale_listener:
+            class: AppBundle\EventSubscriber\LocaleSubscriber
+            arguments: ['%kernel.default_locale%']
+            tags:
+                - { name: kernel.event_subscriber }
