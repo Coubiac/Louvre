@@ -69,7 +69,7 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         if(response < 1000){
-                            alert('Attention ! il ne reste que ' + response + ' tickets à cette date !')
+                            Materialize.toast('Attention ! il ne reste que ' + response + ' tickets à cette date !', 4000, 'deep-orange darken-4 rounded');
                         }
                         $('.ticketform').collection({
                             min: 0,

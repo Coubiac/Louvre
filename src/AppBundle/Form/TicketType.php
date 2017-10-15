@@ -42,7 +42,6 @@ class TicketType extends AbstractType
                 'html5' => false,
                 'attr' => array('class' => 'birthdate', 'max' => date('Y-m-d')),
                 'format' => 'dd/MM/yyyy',
-
             ));
     }
 
