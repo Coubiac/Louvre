@@ -32,14 +32,14 @@ class OrderController extends Controller
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
+                $this->get('priceCalculator')->setTotalPrice($order);
+                $session->set('order', $order);
 
-            $this->get('priceCalculator')->setTotalPrice($order);
-            $session->set('order', $order);
+                return $this->render('default/summary.html.twig', array(
+                    'order' => $order));
+            }
 
-            return $this->render('default/summary.html.twig', array(
-                'order' => $order));
-        }
         return $this->render('default/index.html.twig', array(
             'form' => $form->createView(),
             'lang' => $request->getLocale(),
@@ -59,9 +59,9 @@ class OrderController extends Controller
 
         $paymentManager = $this->get('paymentManager');
         $order = $session->get('order');
-        if ( $paymentManager->checkoutAction($order, $request)){
+        if ($paymentManager->checkoutAction($order, $request)) {
             $notification->sendConfirmationAction($order);
-            foreach ($order->getTickets() as $ticket){
+            foreach ($order->getTickets() as $ticket) {
                 $ticket->setOrder($order);
             }
             $em = $this->getDoctrine()->getManager();
@@ -76,14 +76,14 @@ class OrderController extends Controller
 
 
     /**
-     * @Route("/findunavailabedates", name="findunavailabledates")
+     * @Route("/findunavailabedates", name="findunavailabledates", condition="request.isXmlHttpRequest()")
      * @Method({"GET"})
      * @param Request $request
      * @return JsonResponse|Response
      */
     public function findUnavailableDatesAction(Request $request)
     {
-        if($request->isXmlHttpRequest()) {
+
             $unavailableDates = $this->getDoctrine()->getRepository('AppBundle:Order')->findUnavailableDate();
             $response = array();
             foreach ($unavailableDates as $date) {
@@ -92,12 +92,6 @@ class OrderController extends Controller
             }
 
             return new JsonResponse($response);
-        }
-        else{
-            return new Response("Error: This is not an ajax Request", 400);
-        }
-
-
 
     }
 
@@ -109,12 +103,12 @@ class OrderController extends Controller
      */
     public function countAvailableTicketAction($timestamp)
     {
-            $date = new DateTime();
-            $date->setTimestamp($timestamp);
+        $date = new DateTime();
+        $date->setTimestamp($timestamp);
 
-            $availableTickets = $this->getDoctrine()->getRepository('AppBundle:Ticket')->countAvailableTickets($date);
+        $availableTickets = $this->getDoctrine()->getRepository('AppBundle:Ticket')->countAvailableTickets($date);
 
-            return new JsonResponse($availableTickets);
+        return new JsonResponse($availableTickets);
     }
 
 

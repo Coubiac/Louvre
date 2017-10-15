@@ -17,7 +17,7 @@ class PriceCalculatorTest extends KernelTestCase
     protected function setUp()
     {
         $this->order = new Order();
-        // TODO gerer coeff demijournée
+
 
         $this->ticket = new Ticket();
         $this->order->addTicket($this->ticket);

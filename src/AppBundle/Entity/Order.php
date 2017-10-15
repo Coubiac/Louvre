@@ -22,6 +22,7 @@ class Order
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     *
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -36,7 +37,8 @@ class Order
 
     /**
      * @var \DateTime
-     *
+     * @Assert\DateTime()
+     * @Assert\NotBlank()
      * @ORM\Column(name="purchase_date", type="datetime")
      */
     private $purchaseDate;
@@ -55,7 +57,7 @@ class Order
 
     /**
      * @var bool
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="full_day_ticket", type="boolean")
      */
     private $fullDayTicket;
@@ -64,7 +66,7 @@ class Order
 
     /**
      * @var string
-     *
+     * @Assert\Email()
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;

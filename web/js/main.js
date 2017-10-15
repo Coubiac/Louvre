@@ -1,9 +1,3 @@
-
-alert(lang);
-
-
-
-
 function getfulldays() {
     var route = Routing.generate('findunavailabledates');
     var dates = [];
@@ -24,21 +18,33 @@ function getfulldays() {
     return dates;
 }
 
+
+
 $(document).ready(function () {
-    var fulldays = getfulldays();
-    var closedDays = GetHollidays();
-    var hollidays = closedDays.concat(fulldays);
+
     //-------------------------------------------
     //Material Design
     $('.parallax').parallax();
     $('select').material_select();
 
-
-
-
-    $('.select-dropdown').val('');
-
     //Datepicker pour date de visite
+
+    var halfDay = $("#appbundle_order_fullDayTicket option[value='0']");
+    var fullday = $("#appbundle_order_fullDayTicket option[value='1']");
+    var now = new Date();
+    var hour = ('0'+now.getHours()  ).slice(-2);
+
+
+    var fulldays = getfulldays();
+    var closedDays = GetHollidays();
+    var hollidays = closedDays.concat(fulldays);
+    if(hour >= 18){
+        var nowClosed =[];
+        nowClosed.push([ now.getFullYear(), now.getMonth(), now.getDate() ]);
+        hollidays = hollidays.concat(nowClosed);
+    }
+
+
     if(lang === "fr"){
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
@@ -46,7 +52,7 @@ $(document).ready(function () {
             monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
             weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
             formatSubmit: 'yyyy/mm/dd',
-            format: 'yyyy-mm-dd',
+            format: 'dd/mm/yyyy',
             today: 'Aujourd\'hui',
             clear: 'Effacer',
             close: 'Ok',
@@ -54,16 +60,14 @@ $(document).ready(function () {
             firstDay: 1,
             closeOnSelect: false,
             onSet: function (context) {
-                var selectedDate = context.select / 1000;
-                var route = Routing.generate('countavailabletickets', {'timestamp': selectedDate});
-                console.log(context.select);
+                var selectedTimestamp = parseInt(context.select / 1000);
+                var route = Routing.generate('countavailabletickets', {'timestamp': selectedTimestamp});
                 $.ajax({
                     async: true,
                     type: "GET",
                     url: route,
                     dataType: "json",
                     success: function (response) {
-
                         if(response < 1000){
                             alert('Attention ! il ne reste que ' + response + ' tickets à cette date !')
                         }
@@ -77,11 +81,20 @@ $(document).ready(function () {
                             name_prefix: '',
                             allow_down: false
                         });
-                        $('select').material_select();
+                        dateOfVisit = new Date(parseInt(context.select));
 
+                        if (transformDate(dateOfVisit) === transformDate(now) && hour >= 14 && hour < 24){
+                            fullday.remove();
+                            $('select').material_select();
+                        }
+                        else{
+                            fullday.insertBefore(halfDay);
+                            $('select').material_select();
+                        }
                     }
                 });
             },
+
             disable: hollidays
         });
 
@@ -90,7 +103,7 @@ $(document).ready(function () {
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 2,
-            format: 'yyyy-mm-dd',
+            format: 'dd/mm/yyyy',
             today: 'Today',
             clear: 'Clear',
             close: 'Ok',
@@ -98,8 +111,11 @@ $(document).ready(function () {
             firstDay: 1,
             closeOnSelect: false,
             onSet: function (context) {
-                var selectedDate = context.select / 1000;
-                var route = Routing.generate('countavailabletickets', {'timestamp': selectedDate});
+                var selectedTimestamp = context.select / 1000;
+
+
+
+                var route = Routing.generate('countavailabletickets', {'timestamp': selectedTimestamp});
                 console.log(context.select);
                 $.ajax({
                     async: true,
@@ -121,8 +137,16 @@ $(document).ready(function () {
                             name_prefix: '',
                             allow_down: false
                         });
-                        $('select').material_select();
+                        dateOfVisit = new Date(parseInt(context.select));
 
+                        if (transformDate(dateOfVisit) === transformDate(now) && hour >= 14 && hour < 24){
+                            fullday.remove();
+                            $('select').material_select();
+                        }
+                        else{
+                            fullday.insertBefore(halfDay);
+                            $('select').material_select();
+                        }
                     }
                 });
             },
@@ -133,6 +157,7 @@ $(document).ready(function () {
 
 
 });
+
 
 
 function Easter(y) // Takes a given year (y) then returns Date object of Easter Sunday
@@ -243,8 +268,8 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
         assumptions,
         toussaints,
         ww1Victorys,
-        christmas,
-        closedDays);
+        christmas
+    ); //TODO: Rajouter les jours de fermeture
 
 
     //hollidayarray.push(0,2);
@@ -254,5 +279,10 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
 
 }
 
+function transformDate(date){
 
-
+    var year   = date.getFullYear();
+    var month    = ('0'+(date.getMonth() + 1 )).slice(-2);
+    var day    = ('0'+date.getDate()   ).slice(-2);
+    return  day + "/" + month + "/" + year;
+}

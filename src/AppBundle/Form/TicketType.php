@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Form\Type\PreferredChoicesMaintainingCountryType;
 
 class TicketType extends AbstractType
 {
@@ -30,18 +31,21 @@ class TicketType extends AbstractType
             'required' => true))
             ->add('lastname', TextType::class)
             ->add('firstname', TextType::class)
-            ->add('country', CountryType::class, array('data' => \Locale::getDefault(),
+            ->add('country', PreferredChoicesMaintainingCountryType::class, array('data' => \Locale::getDefault(),
                 'label' => false,
+                'preferred_choices' => array('FR', 'EN', 'DE', 'ES', 'IT', 'BE', 'US'),
+                'choices_as_values' => true,
+
                 'attr' => ['class' => 'select']))
             ->add('birthdate', DateType::class, array(
-        'widget' => 'single_text',
-        'html5' => false,
-        'attr' => array('class' => 'birthdate', 'max' => date('Y-m-d')),
-        'format' => 'dd/MM/yyyy',
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => array('class' => 'birthdate', 'max' => date('Y-m-d')),
+                'format' => 'dd/MM/yyyy',
 
-    ));
+            ));
     }
-    
+
     /**
      * {@inheritdoc}
      */

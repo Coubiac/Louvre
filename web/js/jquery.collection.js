@@ -473,6 +473,7 @@
         // "duplicate" button, all element values are then inserted. finally, callbacks let user cancel
         // those actions if needed.
         var doAdd = function (container, that, collection, settings, elements, element, index, isDuplicate) {
+
             if (elements.length < settings.max && (isDuplicate && trueOrUndefined(settings.before_duplicate(collection, element)) || trueOrUndefined(settings.before_add(collection, element)))) {
                 var prototype = collection.data('prototype');
                 var freeIndex = elements.length;
@@ -530,6 +531,7 @@
             if (code !== undefined && settings.fade_in) {
                 code.fadeIn('fast');
             }
+            $('select').material_select();
 
             return elements;
         };

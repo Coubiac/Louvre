@@ -24,19 +24,18 @@ class OrderType extends AbstractType
 
             ))
             ->add('dateOfVisit', DateType::class, array(
-            'widget' => 'single_text',
-            'html5' => true,
-            'attr' => array('class' => 'datepicker', 'min' => date('Y-m-d')),
-            'format' => 'yyyy-MM-dd',
-        ))
+                'widget' => 'single_text',
+                'html5' => true,
+                'attr' => array('class' => 'datepicker', 'min' => date('d-m-Y'), 'id' => 'dateOfVisit'),
+                'format' => 'dd/MM/yyyy',
+            ))
             ->add('fullDayTicket', ChoiceType::class, array(
                 'choices' => array(
                     'Full day ticket' => true,
                     'Half day ticket (From 14 hours)' => false,
                 ),
                 'label' => 'Please, choose a ticket type',
-                'empty_data' => '',
-
+                'attr' => array('class' => 'ticketType'),
 
 
             ))
@@ -45,9 +44,12 @@ class OrderType extends AbstractType
                 'allow_add' => true,
                 'prototype' => true,
                 'allow_delete' => true,
+                'label' => false,
+                'entry_options' => array(
+                    'label' => false,
+                ),
                 'attr' => array(
                     'class' => 'ticketform',
-                    'label' => '',
                 ),
 
 

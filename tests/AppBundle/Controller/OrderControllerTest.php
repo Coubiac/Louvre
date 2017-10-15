@@ -12,20 +12,6 @@ class OrderControllerTest extends WebTestCase
 {
 
     private $client = null;
-    private $order;
-    private $ticket;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-        $dateOfVisit = new DateTime('2018-08-12');
-        $this->order = new Order();
-        $this->order->setEmail('testlouvre@gmail.com')->setDateOfVisit($dateOfVisit)->setFullDayTicket(true);
-
-        $this->ticket = new Ticket;
-
-
-    }
 
     public function testHomepageIsUp()
     {
@@ -39,9 +25,8 @@ class OrderControllerTest extends WebTestCase
 
     public function testInvalidDate()
     {
-        $client = static::createClient();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $this->client->request('GET', '/');
 
         $form = $crawler->selectButton('Submit')->form();
 
@@ -49,21 +34,20 @@ class OrderControllerTest extends WebTestCase
         $form['appbundle_order[dateOfVisit]'] = '2018-08-12';
         $form['appbundle_order[fullDayTicket]'] = true;
 
-        $crawler = $client->submit($form);
+        $crawler = $this->client->submit($form);
 
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertRegexp(
             '/The museum is closed on Sundays and Tuesdays. Please choose another day/',
-            $client->getResponse()->getContent());
+            $this->client->getResponse()->getContent());
 
 
     }
 
     public function testSummary()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/');
+        $crawler = $this->client->request('GET', '/');
         $extract = $crawler->filter('input[name="appbundle_order[_token]"]')
             ->extract(array('value'));
         $csrf_token = $extract[0];
@@ -79,15 +63,19 @@ class OrderControllerTest extends WebTestCase
             'appbundle_order[tickets][0][birthdate]' => '03/05/1979',
             'appbundle_order[submit]' => '',
             'appbundle_order[_token]' => $csrf_token);
-        $client->request(
+        $this->client->request(
             'POST',
             '/',
             $data);
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        echo($client->getResponse()->getContent());
-
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
     }
+
+    public function setUp()
+    {
+        $this->client = static::createClient();
+
+    }
+
 
 }
