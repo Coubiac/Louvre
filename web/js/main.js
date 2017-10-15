@@ -268,8 +268,9 @@ function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermetu
         assumptions,
         toussaints,
         ww1Victorys,
-        christmas
-    ); //TODO: Rajouter les jours de fermeture
+        christmas,
+        closedDays
+    );
 
 
     //hollidayarray.push(0,2);

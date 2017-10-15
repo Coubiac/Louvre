@@ -1,5 +1,6 @@
 {
-    "name": "ben/.checkout",
+    "name": "Louvre",
+    "Description": "Projet 4",
     "license": "proprietary",
     "type": "project",
     "autoload": {
