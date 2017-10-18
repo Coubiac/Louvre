@@ -33,12 +33,12 @@ class OrderController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                $this->get('priceCalculator')->setTotalPrice($order);
-                $session->set('order', $order);
+            $this->get('priceCalculator')->setTotalPrice($order);
+            $session->set('order', $order);
 
-                return $this->render('default/summary.html.twig', array(
-                    'order' => $order));
-            }
+            return $this->render('default/summary.html.twig', array(
+                'order' => $order));
+        }
 
         return $this->render('default/index.html.twig', array(
             'form' => $form->createView(),
@@ -84,14 +84,14 @@ class OrderController extends Controller
     public function findUnavailableDatesAction(Request $request)
     {
 
-            $unavailableDates = $this->getDoctrine()->getRepository('AppBundle:Order')->findUnavailableDate();
-            $response = array();
-            foreach ($unavailableDates as $date) {
-                $date = $date->getTimestamp();
-                array_push($response, $date);
-            }
+        $unavailableDates = $this->getDoctrine()->getRepository('AppBundle:Order')->findUnavailableDate();
+        $response = array();
+        foreach ($unavailableDates as $date) {
+            $date = $date->getTimestamp();
+            array_push($response, $date);
+        }
 
-            return new JsonResponse($response);
+        return new JsonResponse($response);
 
     }
 

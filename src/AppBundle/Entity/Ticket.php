@@ -294,4 +294,6 @@ class Ticket
     {
         return $this->country;
     }
+
+
 }

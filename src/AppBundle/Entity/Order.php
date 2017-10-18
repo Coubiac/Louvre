@@ -2,11 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Services\PriceCalculator\PriceCalculator;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use AppBundle\Validator\Constraints as LouvreAssert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Order
@@ -287,5 +289,23 @@ class Order
     public function getTickets()
     {
         return $this->tickets;
+    }
+
+
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        $priceCalculator = new PriceCalculator();
+        $order = $priceCalculator->setTotalPrice($this);
+
+
+
+        if ($order->getTotal() == 0) {
+            $context->buildViolation('Children must be accompanied')
+                ->atPath('Tickets')
+                ->addViolation();
+        }
     }
 }

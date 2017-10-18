@@ -35,3 +35,8 @@ textarea.materialize-textarea:focus:not([readonly]) {
 .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
     background-color: #dd2c00;
 }
+
+.error{
+    background-color: #dd2c00;
+    color: white;
+}

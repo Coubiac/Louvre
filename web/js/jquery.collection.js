@@ -91,7 +91,8 @@
             custom_add_location: false,
             fade_in: true,
             fade_out: true,
-            position_field_selector: null
+            position_field_selector: null,
+            preserve_names: false
         };
 
         // used to generate random id attributes when required and missing
@@ -205,7 +206,7 @@
             var replaceWith = settings.name_prefix + '[' + newIndex + ']';
 
             if (settings.children) {
-                $.each(settings.children, function(key, child) {
+                $.each(settings.children, function (key, child) {
                     var childCollection = collection.find(child.selector).eq(index);
                     var childSettings = childCollection.data('collection-settings');
                     if (childSettings) {
@@ -224,9 +225,9 @@
 
         // same as above, but will replace element names and indexes in an html string instead
         // of in a dom element.
-        var changeHtmlIndex = function (collection, settings, html, oldIndex, newIndex) {
-            var toReplace = new RegExp(pregQuote(settings.name_prefix + '[' + oldIndex + ']'), 'g');
-            var replaceWith = settings.name_prefix + '[' + newIndex + ']';
+        var changeHtmlIndex = function (collection, settings, html, oldIndex, newIndex, oldKey, newKey) {
+            var toReplace = new RegExp(pregQuote(settings.name_prefix + '[' + oldKey + ']'), 'g');
+            var replaceWith = settings.name_prefix + '[' + newKey + ']';
             html = html.replace(toReplace, replaceWith);
 
             toReplace = new RegExp(pregQuote(collection.attr('id') + '_' + oldIndex), 'g');
@@ -254,10 +255,7 @@
 
             var settings = collection.data('collection-settings');
 
-            if (settings.position_field_selector) {
-                putFieldValue(elements.eq(newIndex).find(settings.position_field_selector), oldIndex);
-                putFieldValue(elements.eq(oldIndex).find(settings.position_field_selector), newIndex);
-            } else {
+            if (!settings.position_field_selector && !settings.preserve_names) {
                 changeElementIndex(collection, elements, settings, oldIndex, oldIndex, '__swap__');
                 changeElementIndex(collection, elements, settings, newIndex, newIndex, oldIndex);
                 changeElementIndex(collection, elements, settings, oldIndex, '__swap__', newIndex);
@@ -346,11 +344,18 @@
                 }
             }
 
+            // Track last index
+            collection.data('last-index', elements.length - 1);
+
             // make buttons appear/disappear in each elements of the collection according to options
             // (enabled, min/max...) and logic (for example, do not put a move up button on the first
             // element of the collection)
             elements.each(function (index) {
                 var element = $(this);
+
+                if (isInitialization) {
+                    element.data('index', index);
+                }
 
                 var actions = element.find('.' + settings.prefix + '-actions').addBack().filter('.' + settings.prefix + '-actions');
                 if (actions.length === 0) {
@@ -373,7 +378,7 @@
                         'enabled': settings.allow_up,
                         'selector': settings.prefix + '-up',
                         'html': settings.up,
-                        'condition': elements.length - delta > 1 && elements.index(element) !== 0
+                        'condition': elements.length - delta > 1 && elements.index(element) - delta > 0
                     }, {
                         'enabled': settings.allow_down,
                         'selector': settings.prefix + '-down',
@@ -473,24 +478,43 @@
         // "duplicate" button, all element values are then inserted. finally, callbacks let user cancel
         // those actions if needed.
         var doAdd = function (container, that, collection, settings, elements, element, index, isDuplicate) {
-
             if (elements.length < settings.max && (isDuplicate && trueOrUndefined(settings.before_duplicate(collection, element)) || trueOrUndefined(settings.before_add(collection, element)))) {
                 var prototype = collection.data('prototype');
-                var freeIndex = elements.length;
+                var freeIndex = collection.data('last-index') + 1;
+
+                collection.data('last-index', freeIndex);
+
                 if (index === -1) {
                     index = elements.length - 1;
                 }
                 var regexp = new RegExp(pregQuote(settings.prototype_name), 'g');
-                var code = $(prototype.replace(regexp, freeIndex));
+                var freeKey = freeIndex;
+
+                if (settings.preserve_names) {
+                    freeKey = collection.data('collection-free-key');
+
+                    if (freeKey === undefined) {
+                        freeKey = findFreeNumericKey(settings, elements);
+                    }
+
+                    collection.data('collection-free-key', freeKey + 1);
+                }
+
+                var code = $(prototype.replace(regexp, freeKey)).data('index', freeIndex);
+
                 var elementsParent = $(settings.elements_parent_selector);
                 var tmp = elementsParent.find('> .' + settings.prefix + '-tmp');
                 var id = $(code).find('[id]').first().attr('id');
 
                 if (isDuplicate) {
-                    putFieldValuesInDom(elements.eq(index));
-                    var oldHtml = $("<div/>").append(elements.eq(index).clone()).html();
-                    var newHtml = changeHtmlIndex(collection, settings, oldHtml, index, freeIndex);
-                    code = $('<div/>').html(newHtml).contents();
+                    var oldElement = elements.eq(index);
+                    putFieldValuesInDom(oldElement);
+                    var oldHtml = $("<div/>").append(oldElement.clone()).html();
+                    var oldIndex = settings.preserve_names || settings.position_field_selector ? oldElement.data('index') : index;
+                    var oldKey = settings.preserve_names ? getElementKey(settings, oldElement) : oldIndex;
+                    var newHtml = changeHtmlIndex(collection, settings, oldHtml, oldIndex, freeIndex, oldKey, freeKey);
+
+                    code = $('<div/>').html(newHtml).contents().data('index', freeIndex);
                     if (settings.fade_in) {
                         code.hide();
                     }
@@ -502,17 +526,14 @@
                     tmp.before(code);
                 }
 
-                if (settings.position_field_selector) {
-                    putFieldValue(code.find(settings.position_field_selector), freeIndex);
-                }
-
                 elements = collection.find(settings.elements_selector);
+
                 var action = code.find('.' + settings.prefix + '-add, .' + settings.prefix + '-duplicate');
                 if (action.length > 0) {
                     action.addClass(settings.prefix + '-action').data('collection', collection.attr('id'));
                 }
 
-                if (index + 1 !== freeIndex) {
+                if (!settings.add_at_the_end && index + 1 !== freeIndex) {
                     elements = doMove(collection, settings, elements, code, freeIndex, index + 1);
                 } else {
                     dumpCollectionActions(collection, settings, false);
@@ -529,9 +550,16 @@
             }
 
             if (code !== undefined && settings.fade_in) {
-                code.fadeIn('fast');
+                code.fadeIn('fast', function () {
+                    if (settings.position_field_selector) {
+                        doRewritePositions(settings, elements);
+                    }
+                });
+            } else {
+                if (settings.position_field_selector) {
+                    return doRewritePositions(settings, elements);
+                }
             }
-            $('select').material_select();
 
             return elements;
         };
@@ -550,6 +578,9 @@
                         elementsParent.find('> .' + settings.prefix + '-tmp').before(backup);
                         elements = collection.find(settings.elements_selector);
                         elements = shiftElementsDown(collection, elements, settings, index - 1);
+                    }
+                    if (settings.position_field_selector) {
+                        doRewritePositions(settings, elements);
                     }
                 };
                 if (settings.fade_out) {
@@ -574,6 +605,10 @@
                 }
             }
 
+            if (settings.position_field_selector) {
+                return doRewritePositions(settings, elements);
+            }
+
             return elements;
         };
 
@@ -585,6 +620,10 @@
                 if (!trueOrUndefined(settings.after_down(collection, elements))) {
                     elements = swapElements(collection, elements, index + 1, index);
                 }
+            }
+
+            if (settings.position_field_selector) {
+                return doRewritePositions(settings, elements);
             }
 
             return elements;
@@ -612,7 +651,40 @@
             }
             dumpCollectionActions(collection, settings, false);
 
+            if (settings.position_field_selector) {
+                return doRewritePositions(settings, elements);
+            }
+
             return elements;
+        };
+
+        var doRewritePositions = function (settings, elements) {
+            $(elements).each(function () {
+                var element = $(this);
+                putFieldValue(element.find(settings.position_field_selector), elements.index(element));
+            });
+
+            return elements;
+        }
+
+        var getElementKey = function (settings, element) {
+            var name = element.find(':input[name^="' + settings.name_prefix + '["]').attr('name');
+
+            return name.slice(settings.name_prefix.length + 1).split(']', 1)[0];
+        };
+
+        var findFreeNumericKey = function (settings, elements) {
+            var freeKey = 0;
+
+            elements.each(function () {
+                var key = getElementKey(settings, $(this));
+
+                if (/^0|[1-9]\d*$/.test(key) && key >= freeKey) {
+                    freeKey = Number(key) + 1;
+                }
+            });
+
+            return freeKey;
         };
 
         // we're in a $.fn., so in $('.collection').collection(), $(this) equals $('.collection')
@@ -647,6 +719,7 @@
             } else {
                 collection = elem;
             }
+            collection = $(collection);
 
             // when adding elements to a collection, we should be aware of the node that will contain them
             settings.elements_parent_selector = settings.elements_parent_selector.replace('%id%', '#' + getOrCreateId('', collection));
@@ -704,9 +777,22 @@
                 return true;
             }
 
+            // if preserve_names option is set, we should enforce many options to avoid
+            // having inconsistencies between the UI and the Symfony result
+            if (settings.preserve_names) {
+                settings.allow_up = false;
+                settings.allow_down = false;
+                settings.drag_drop = false;
+                settings.add_at_the_end = true;
+            }
+
             // drag & drop support: this is a bit more complex than pressing "up" or
             // "down" buttons because we can move elements more than one place ahead
             // or below...
+            if ((typeof jQuery.ui !== 'undefined' && typeof jQuery.ui.sortable !== 'undefined')
+                && collection.hasClass('ui-sortable')) {
+                collection.sortable('disable');
+            }
             if (settings.drag_drop && settings.allow_up && settings.allow_down) {
                 var oldPosition;
                 var newPosition;
@@ -815,9 +901,9 @@
                 };
                 array.sort(sorter);
 
-                $.each(array, function(newIndex, object) {
+                $.each(array, function (newIndex, object) {
                     var ids = [];
-                    $(elements).each(function(index) {
+                    $(elements).each(function (index) {
                         ids.push($(this).attr('id'));
                     });
 
@@ -826,7 +912,7 @@
 
                     if (newIndex !== oldIndex) {
                         elements = doMove(collection, settings, elements, element, oldIndex, newIndex);
-                        putFieldValue(element.find(settings.position_field_selector), newIndex);
+                        putFieldValue(element.find(settings.position_field_selector), elements.index(element));
                     }
                 });
             } // if (settings.position_field_selector) {

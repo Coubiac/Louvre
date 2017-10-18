@@ -10,23 +10,25 @@
             <table>
                 <thead>
                 <tr>
-                    <th>{{ "Firstname"|trans}}</th>
-                    <th>{{ "Lastname"|trans}}</th>
-                    <th>{{ "Born"|trans}}</th>
-                    <th>{{ "Nationality"|trans}}</th>
-                    <th>{{ "Item Price"|trans}}</th>
+                    <th>{{ "Firstname"|trans }}</th>
+                    <th>{{ "Lastname"|trans }}</th>
+                    <th>Age</th>
+                    <th>{{ "Country"|trans }}</th>
+                    <th>{{ "Item Price"|trans }}</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 {% for ticket in order.tickets %}
-                <tr>
-                    <td>{{ ticket.firstname }}</td>
-                    <td>{{ ticket.lastname }}</td>
-                    <td>{{ ticket.birthdate|ago }}</td>
-                    <td></td>
-                    <td>{{ ticket.price }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ ticket.firstname }}</td>
+                        <td>{{ ticket.lastname }}</td>
+
+
+                        <td>{{ ticket.birthdate|age(order.dateOfVisit) }}</td>
+                        <td>{{ ticket.country|countryName }}</td>
+                        <td>{{ ticket.price }}</td>
+                    </tr>
                 {% endfor %}
 
                 </tbody>
@@ -39,7 +41,7 @@
                         data-image="{{ asset('img/logo-pyramide.png') }}"
                         data-label="{{ "Checkout"|trans }}"
                         data-name="{{ "Louvre Museum"|trans }}"
-                        data-description={{"Ticket order"|trans}}
+                        data-description={{ "Ticket order"|trans }}
                         data-locale="auto"
                         data-customer="true"
                         data-allow-remember-me="false"
