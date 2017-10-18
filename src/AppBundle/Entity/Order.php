@@ -59,7 +59,6 @@ class Order
 
     /**
      * @var bool
-     * @Assert\NotBlank()
      * @ORM\Column(name="full_day_ticket", type="boolean")
      */
     private $fullDayTicket;
