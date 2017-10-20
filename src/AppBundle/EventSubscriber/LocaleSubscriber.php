@@ -21,16 +21,9 @@ class LocaleSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $language = $request->getLanguages();
 
-        if (!$request->hasPreviousSession()) {
-            return;
-        }
         if (preg_match("#^fr#", $language[0])) {
 
             $request->setLocale('fr');
-
-
-        } else {
-            $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
 
         }
 
