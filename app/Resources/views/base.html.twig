@@ -3,10 +3,12 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block script %}{% endblock %}
         <!--Import Google Icon Font-->
 {% include 'assets/css.html.twig' %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
+
     <body class="grey darken-4">
     <div class="navbar-fixed">
     <nav>
@@ -20,5 +22,6 @@
 
         {% endblock %}
 {% include 'assets/js.html.twig' %}
+    {% block js %}{% endblock %}
     </body>
 </html>

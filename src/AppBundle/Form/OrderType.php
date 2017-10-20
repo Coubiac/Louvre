@@ -45,6 +45,7 @@ class OrderType extends AbstractType
                 'prototype' => true,
                 'allow_delete' => true,
                 'label' => false,
+                'by_reference' => false,
                 'entry_options' => array(
                     'label' => false,
                 ),

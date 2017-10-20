@@ -40,3 +40,21 @@ textarea.materialize-textarea:focus:not([readonly]) {
     background-color: #dd2c00;
     color: white;
 }
+.formbirthday .form-control{
+    width: 75px;
+    font-size: 1.0em;
+    display: inline-block;
+
+}
+
+.birthdate{
+    display: flex; !important;
+
+}
+
+.tickets{
+    padding-top: 10px;
+}
+.add_ticket_link{
+    margin-top: 10px;
+}

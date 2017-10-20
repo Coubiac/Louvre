@@ -1,4 +1,8 @@
 {% extends 'base.html.twig' %}
+{% block script %}
+    <script>
+        var lang = "{{ lang }}";
+    </script>{% endblock %}
 {% block body %}
     <div class="parallax-container">
         <div class="parallax"><img src="{{ asset('img/parallax1.jpg') }}"></div>
@@ -7,7 +11,19 @@
         <div class="row container">
             <h2 class="header">{{ "Book your tickets online"|trans }}</h2>
 
-            {{ form(form) }}
+            {{ form_start(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.dateOfVisit) }}
+            {{ form_row(form.fullDayTicket) }}
+
+            <h3>Tickets</h3>
+
+
+            <div class="tickets">
+                <ul class="tickets" data-prototype="{{ form_widget(form.tickets.vars.prototype)|e('html_attr') }}">
+                </ul>
+            </div>
+            {{ form_end(form) }}
 
 
         </div>
@@ -15,8 +31,16 @@
     <div class="parallax-container">
         <div class="parallax"><img src="{{ asset('img/parallax2.jpg') }}"></div>
     </div>
-    <script>
-        var lang = "{{ lang }}";
-    </script>
 
+{% endblock %}
+{% block js %}
+    <script>
+        var maxTickets = 1;
+        var minTickets = 1;
+    </script>
+    <script type="text/javascript" src="{{ asset('js/dates.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset("js/TicketCollection.js") }}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/datepicker.js') }}"></script>
 {% endblock %}

@@ -2,11 +2,12 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Form\Type\PreferredChoicesMaintainingCountryType;
@@ -38,10 +39,12 @@ class TicketType extends AbstractType
 
                 'attr' => ['class' => 'select']))
             ->add('birthdate', DateType::class, array(
-                'widget' => 'single_text',
-                'html5' => false,
-                'attr' => array('class' => 'birthdate', 'max' => date('Y-m-d')),
-                'format' => 'dd/MM/yyyy',
+                'format' => 'ddMMyyyy',
+                'years' => range(date('Y') - 99, date('Y')),
+                'label_attr' => ['class' => 'active'],
+                'attr' => array(
+                    'class' => 'active birthdate',
+                ),
             ));
     }
 

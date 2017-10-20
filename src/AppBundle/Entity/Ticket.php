@@ -41,14 +41,14 @@ class Ticket
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="lastname", type="string", length=255)
      */
     private $lastname;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="firstname", type="string", length=255)
      */
     private $firstname;
@@ -56,7 +56,8 @@ class Ticket
 
     /**
      * @var \DateTime
-     *
+     * @Assert\DateTime()
+     * @Assert\NotNull(message="Please enter a date")
      * @ORM\Column(name="birthdate", type="datetime")
      */
     private $birthdate;

@@ -1,0 +1,57 @@
+<div class="well test-addobs">
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+    {{ form_errors(form) }}
+
+    <div class="date-observation">
+        {{ form_label(form.email, "Your mail adress") }}
+        {{ form_errors(form.email) }}
+        {{ form_widget(form.email, {'attr':{'class': 'order-email'}}) }}
+    </div>
+
+    <div class="input-field">
+        {{ form_label(form.dateOfVisit) }}
+        {{ form_errors(form.dateOfVisit) }}
+        {{ form_widget(form.dateOfVisit) }}
+    </div>
+
+
+    <div class="input-field">
+        {{ form_label(form.fullDayTicket) }}
+        {{ form_errors(form.fullDayTicket) }}
+        {{ form_widget(form.fullDayTicket) }}
+
+    </div>
+
+    <div class="input-field">
+        {{ form_label(form.longitude, "Longitude *") }}
+        {{ form_errors(form.longitude) }}
+        {{ form_widget(form.longitude, {'attr': {'class': 'form-control longitude', 'readonly': 'readonly', 'value': 'longitude'}}) }}
+    </div>
+
+    <div>
+        {{ form_label(form.taxref, "Choisissez une espèce *") }}
+        {{ form_errors(form.taxref) }}
+        {{ form_widget(form.taxref, {'attr': {'class': 'oiseaux'}}) }}
+        <p class="text-identifier">Vous avez un doute sur l'espèce observée ? Vous pouvez l'indentifier à l'aide de <a href="http://www.oiseaux.net/identifier/" target="_blank">cette page</a></p>
+    </div>
+
+    <div class="add-obs-photo ">
+        {{ form_label(form.imageFile) }}
+        {{ form_widget(form.imageFile, {'attr': {'class': 'filestyle','data-placeholder': 'Sélectionnez une image carré < 2 Mo', 'data-buttonName': 'waves-effect waves-light btn', 'data-buttonText': 'Parcourir'}}) }}
+        {{ form_errors(form.imageFile) }}
+    </div>
+    {{ form_rest(form) }}
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-6 right-align">
+            <button class="waves-effect waves-light btn deep-orange darken-4" type="submit">Valider</button>
+
+        </div>
+    </div>
+
+
+    {{ form_end(form) }}
+</div>
