@@ -42,7 +42,6 @@ class OrderController extends Controller
 
         return $this->render('default/index.html.twig', array(
             'form' => $form->createView(),
-            'lang' => $request->getLocale(),
         ));
     }
 
@@ -60,10 +59,8 @@ class OrderController extends Controller
         $paymentManager = $this->get('paymentManager');
         $order = $session->get('order');
         if ($paymentManager->checkoutAction($order, $request)) {
-            $notification->sendConfirmationAction($order);
-            foreach ($order->getTickets() as $ticket) {
-                $ticket->setOrder($order);
-            }
+            //$notification->sendConfirmationAction($order);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($order);
             $em->flush();

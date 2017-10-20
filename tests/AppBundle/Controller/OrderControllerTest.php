@@ -28,10 +28,10 @@ class OrderControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/');
 
-        $form = $crawler->selectButton('Submit')->form();
+        $form = $crawler->selectButton('appbundle_order[submit]')->form();
 
         $form['appbundle_order[email]'] = 'benoit.grisot@gmail.com';
-        $form['appbundle_order[dateOfVisit]'] = '2018-08-12';
+        $form['appbundle_order[dateOfVisit]'] = '12/08/2018';
         $form['appbundle_order[fullDayTicket]'] = true;
 
         $crawler = $this->client->submit($form);
@@ -54,7 +54,7 @@ class OrderControllerTest extends WebTestCase
         $data = array(
             'appbundle_order[email]' => 'benoit.grisot@gmail.com',
             'appbundle_order[dateOfVisit]_submit' => '2017/10/26',
-            'appbundle_order[dateOfVisit]' => '2017-10-26',
+            'appbundle_order[dateOfVisit]' => '26/10/2017',
             'appbundle_order[fullDayTicket]' => '1',
             'appbundle_order[tickets][0][reducedPrice]' => '0',
             'appbundle_order[tickets][0][lastname]' => 'GRISOT',

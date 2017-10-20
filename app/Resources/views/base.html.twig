@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Louvre{% endblock %}</title>
         {% block script %}{% endblock %}
         <!--Import Google Icon Font-->
 {% include 'assets/css.html.twig' %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?2') }}" />
     </head>
 
     <body class="grey darken-4">
