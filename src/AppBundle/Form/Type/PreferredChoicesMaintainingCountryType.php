@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+// Ce form type sert à garder l'ordre des pays dans le country type.
 class PreferredChoicesMaintainingCountryType extends AbstractType
 {
     public function buildView(FormView $view, FormInterface $form, array $options)

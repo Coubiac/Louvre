@@ -17,7 +17,6 @@ $(document).ready(function () {
 
     if($('html').attr('lang') === "fr"){
         $('.datepicker').pickadate({
-            //selectMonths: true, // Creates a dropdown to control month
             selectYears: 2,
             monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
             weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
@@ -92,7 +91,6 @@ $(document).ready(function () {
     }
     else{
         $('.datepicker').pickadate({
-            //selectMonths: true, // Creates a dropdown to control month
             selectYears: 2,
             format: 'dd/mm/yyyy',
             today: '',

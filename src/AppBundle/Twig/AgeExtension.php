@@ -4,6 +4,8 @@
 
 namespace AppBundle\Twig;
 
+
+//Extension permettant d'afficher l'age du visiteur à la date de visite
 class AgeExtension extends \Twig_Extension
 {
     public function getFilters()

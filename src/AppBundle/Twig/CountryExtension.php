@@ -3,6 +3,8 @@ namespace AppBundle\Twig;
 
 use Symfony\Component\Intl\Intl;
 
+
+// Extension pour afficher le Pays en toutes lettres à partir du countrycode
 class CountryExtension extends \Twig_Extension
 {
     public function getFilters()

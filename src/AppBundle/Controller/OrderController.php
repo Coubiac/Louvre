@@ -59,7 +59,7 @@ class OrderController extends Controller
         $paymentManager = $this->get('paymentManager');
         $order = $session->get('order');
         if ($paymentManager->checkoutAction($order, $request)) {
-            //$notification->sendConfirmationAction($order);
+            $notification->sendConfirmationAction($order);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($order);

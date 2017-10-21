@@ -1,3 +1,5 @@
+
+//Appel ajax permettant de connaitre les date où tous les billets ont déja été vendus
 function getfulldays() {
     var route = Routing.generate('findunavailabledates');
     var dates = [];
@@ -9,7 +11,7 @@ function getfulldays() {
         success: function (response) {
 
             for (var i = 0; i < response.length; i++) {
-                var date = new Date(response[i] * 1000);
+                var date = new Date(response[i] * 1000); //On multiplie par 1000 pour transformer le timestamp Unix en timestamp JS
 
                 dates.push([date.getFullYear(), date.getMonth(), date.getDate()]);
             }
@@ -62,7 +64,8 @@ function Easter(y) // Takes a given year (y) then returns Date object of Easter 
 } // -- easterDate
 
 
-function GetHollidays() { //Fonction qui renvoit un tableau des jours de fermeture
+function GetHollidays() //Fonction qui renvoit un tableau des jours de fermeture
+{
 
     var today = new Date;
     var year = today.getFullYear();
