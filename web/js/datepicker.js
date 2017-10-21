@@ -106,7 +106,7 @@ $(document).ready(function () {
                             minTickets = 0;
                         }
                         if(response < 10){
-                            Materialize.toast('Attention ! il ne reste que ' + response + ' tickets à cette date !', 4000, 'deep-orange darken-4 rounded');
+                            Materialize.toast('Attention ! only ' + response + ' tickets left on this date !', 4000, 'deep-orange darken-4 rounded');
                         }
                         if (response > 0) {
                             // Get the ul that holds the collection of tickets
