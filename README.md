@@ -1,3 +1,4 @@
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/84a8e163-19c0-45ce-8011-f9c3ab8016cb/mini.png)](https://insight.sensiolabs.com/projects/84a8e163-19c0-45ce-8011-f9c3ab8016cb)
 
 Ce projet est le projet n°4 du parcours Openclassrooms diplômant "Chef de projet multimédia - Développement" 
 
