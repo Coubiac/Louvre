@@ -52,10 +52,10 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-install-cmd": [
-            "@symfony-scripts",
+            "@symfony-scripts"
         ],
         "post-update-cmd": [
-            "@symfony-scripts",
+            "@symfony-scripts"
         ]
     },
     "config": {
