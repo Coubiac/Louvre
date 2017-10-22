@@ -33,6 +33,7 @@
 
                 </tbody>
             </table>
+            <p>{{ "By validating this order, you declare to accept the entirety of the"|trans }} <a href="https://www.ticketlouvre.fr/louvre/b2c/index.cfm/CGV">{{ "General Conditions of Sale"|trans }}</a>.</p>
             <form action="{{ path('payment') }}" method="POST">
                 <script
                         src="https://checkout.stripe.com/checkout.js" class="stripe-button"

@@ -6,7 +6,7 @@
     </div>
     <div class="section grey darken-4 grey-text text-lighten-5">
         <div class="row container">
-            <h2 class="header">{{ "Book your tickets online"|trans }}</h2>
+            <h2 class="header">{{ "Book your tickets online"|trans }}</h2><span><button data-target="modal1" class="btn modal-trigger deep-orange accent-3">{{ "Pricing"|trans }}</button></span>
 
             {{ form_start(form) }}
             {{ form_row(form.email) }}
@@ -17,8 +17,7 @@
 
 
             <div class="tickets">
-                <ul class="tickets" data-prototype="{{ form_widget(form.tickets.vars.prototype)|e('html_attr') }}">
-                </ul>
+                <ul class="tickets" data-prototype="{{ form_widget(form.tickets.vars.prototype)|e('html_attr') }}"></ul>
             </div>
             {{ form_end(form) }}
 
