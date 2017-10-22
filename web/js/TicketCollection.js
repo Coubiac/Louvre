@@ -1,3 +1,5 @@
+var maxTickets = 1;
+var minTickets = 1;
 var $collectionHolder;
 
 // setup an "add a ticket" link

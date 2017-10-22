@@ -40,6 +40,8 @@ class TicketType extends AbstractType
                 'format' => 'ddMMyyyy',
                 'years' => range(date('Y') - 99, date('Y')),
                 'label_attr' => ['class' => 'active'],
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day'),
                 'attr' => array(
                     'class' => 'active birthdate',
                 ),
