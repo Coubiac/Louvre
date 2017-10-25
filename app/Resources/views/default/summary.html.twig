@@ -27,9 +27,17 @@
 
                         <td>{{ ticket.birthdate|age(order.dateOfVisit) }}</td>
                         <td>{{ ticket.country|countryName }}</td>
-                        <td>{{ ticket.price }}</td>
+                        <td>{{ ticket.price }} €</td>
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td class="total"></td>
+                    <td class="total"></td>
+                    <td class="total"></td>
+                    <td class="total">Total:</td>
+                    <td class="total">{{ order.total }} €</td>
+                </tr>
+
 
                 </tbody>
             </table>

@@ -58,3 +58,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 .add_ticket_link{
     margin-top: 10px;
 }
+.total{
+    font-weight: bold;
+    border-top: solid;
+}

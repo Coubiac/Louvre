@@ -7,10 +7,11 @@
         <div class="row container">
             <h2 class="header">
                 {{ "Thanks You"|trans }}</h2>
-            <p>{{ "Order N°"|trans }}{{ order.orderNumber }}</p>
+            <br>
 
-            <p>{{ "Your order has been successfully registered !"|trans }}</p>
-            <p></p>
+            <p>{{ "Your order is well recorded. It is number"|trans }} {{ order.orderNumber }}. {{ "You will receive your tickets by email within a few minutes"|trans }}.</p>
+            <br>
+            <a class="btn btn-large deep-orange darken-3 white-text"  href="{{ path('index') }}">{{ "Return to homepage"|trans }}</a>
 
         </div>
 
