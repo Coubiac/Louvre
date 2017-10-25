@@ -3,7 +3,7 @@ var minTickets = 1;
 var $collectionHolder;
 
 // setup an "add a ticket" link
-    var $addTicketLink = $('<a href="#" class="add_ticket_link waves-effect waves-light btn deep-orange accent-3 circle">+</a>');
+var $addTicketLink = $('<a href="#" class="add_ticket_link waves-effect waves-light btn deep-orange accent-3 circle">+</a>');
 
 var $newLinkLi = $('<li></li>').append($addTicketLink);
 

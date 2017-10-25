@@ -2,20 +2,38 @@ $(document).ready(function () {
     var halfDay = $("#appbundle_order_fullDayTicket option[value='0']");
     var fullday = $("#appbundle_order_fullDayTicket option[value='1']");
     var now = new Date();
-    var hour = ('0'+now.getHours()  ).slice(-2);
+    var hour = ('0' + now.getHours()  ).slice(-2);
 
 
     var fulldays = getfulldays();
     var closedDays = GetHollidays();
     var hollidays = closedDays.concat(fulldays);
-    if(hour >= 18){
-        var nowClosed =[];
-        nowClosed.push([ now.getFullYear(), now.getMonth(), now.getDate() ]);
+    if (hour >= 18) {
+        var nowClosed = [];
+        nowClosed.push([now.getFullYear(), now.getMonth(), now.getDate()]);
         hollidays = hollidays.concat(nowClosed);
     }
 
 
-    if($('html').attr('lang') === "fr"){
+    $collectionHolder = $('ul.tickets');
+    // add a delete link to all of the existing tag form li elements
+    $collectionHolder.find('li').each(function () {
+        addTicketFormDeleteLink($(this));
+    });
+    // add the "add a ticket" anchor and li to the tickets ul
+    $collectionHolder.append($newLinkLi);
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $collectionHolder.data('index', $collectionHolder.find(':input').length);
+    $addTicketLink.on('click', function (e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+        // add a new ticket form (see next code block)
+        addTicketForm($collectionHolder, $newLinkLi);
+    });
+
+
+    if ($('html').attr('lang') === "fr") {
         $('.datepicker').pickadate({
             selectYears: 2,
             monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
@@ -38,12 +56,13 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (response) {
                         maxTickets = response;
-                            $('ul.tickets li').remove();
-                            $('.remove_ticket_link').remove();
-                        if(response < 1){
+
+                        $('ul.tickets li').remove();
+                        $('.remove_ticket_link').remove();
+                        if (response < 1) {
                             minTickets = 0;
                         }
-                        if(response < 10){
+                        if (response < 10) {
                             Materialize.toast('Attention ! il ne reste que ' + response + ' tickets à cette date !', 4000, 'deep-orange darken-4 rounded');
                         }
                         if (response > 0) {
@@ -66,11 +85,11 @@ $(document).ready(function () {
                             });
                         }
                         dateOfVisit = new Date(parseInt(context.select));
-                        if (transformDate(dateOfVisit) === transformDate(now) && hour >= 14 && hour < 24){
+                        if (transformDate(dateOfVisit) === transformDate(now) && hour >= 14 && hour < 24) {
                             fullday.remove();
                             $('select').material_select();
                         }
-                        else{
+                        else {
                             fullday.insertBefore(halfDay);
                             $('select').material_select();
                         }
@@ -80,7 +99,7 @@ $(document).ready(function () {
             disable: hollidays
         });
     }
-    else{
+    else {
         $('.datepicker').pickadate({
             selectYears: 2,
             format: 'dd/mm/yyyy',
@@ -102,10 +121,10 @@ $(document).ready(function () {
                         maxTickets = response;
                         $('ul.tickets li').remove();
                         $('.remove_ticket_link').remove();
-                        if(response < 1){
+                        if (response < 1) {
                             minTickets = 0;
                         }
-                        if(response < 10){
+                        if (response < 10) {
                             Materialize.toast('Attention ! only ' + response + ' tickets left on this date !', 4000, 'deep-orange darken-4 rounded');
                         }
                         if (response > 0) {
@@ -128,11 +147,11 @@ $(document).ready(function () {
                             });
                         }
                         dateOfVisit = new Date(parseInt(context.select));
-                        if (transformDate(dateOfVisit) === transformDate(now) && hour >= 14 && hour < 24){
+                        if (transformDate(dateOfVisit) === transformDate(now) && hour >= 14 && hour < 24) {
                             fullday.remove();
                             $('select').material_select();
                         }
-                        else{
+                        else {
                             fullday.insertBefore(halfDay);
                             $('select').material_select();
                         }

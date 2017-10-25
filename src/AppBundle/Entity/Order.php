@@ -34,6 +34,10 @@ class Order
      * @var Ticket[]
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Ticket", mappedBy="order", cascade={"persist"})
      * @Assert\Valid()
+     * @Assert\Count(
+     *      min = 1,
+     *      minMessage = "An order must have at least one Ticket",
+     * )
      */
     private $tickets;
 
@@ -301,7 +305,7 @@ class Order
 
 
 
-        if ($order->getTotal() == 0) {
+        if ($order->getTotal() == 0 && $order->getTickets()->count() !== 0) {
             $context->buildViolation('Children must be accompanied')
                 ->atPath('Tickets')
                 ->addViolation();

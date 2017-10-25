@@ -41,6 +41,7 @@ class OrderController extends Controller
         }
 
         return $this->render('default/index.html.twig', array(
+            'order' => $order,
             'form' => $form->createView(),
         ));
     }

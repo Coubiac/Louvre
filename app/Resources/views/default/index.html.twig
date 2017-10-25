@@ -8,9 +8,11 @@
         <div class="row container">
             <h2 class="header">{{ "Book your tickets online"|trans }}</h2><span><button data-target="modal1" class="btn modal-trigger deep-orange accent-3">{{ "Pricing"|trans }}</button></span>
 
+
             {{ form_start(form) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.dateOfVisit) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.email) }}{{ form_errors(form.email) }}
+            {{ form_row(form.dateOfVisit) }}{{ form_errors(form.dateOfVisit) }}
             {{ form_row(form.fullDayTicket) }}
 
             <h3>Tickets</h3>
