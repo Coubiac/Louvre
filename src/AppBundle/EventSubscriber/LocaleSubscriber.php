@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
-
+    //Permet de récupérer la langue du navigateur et ainsi d'adapter la traduction du site
     public function onKernelRequest(GetResponseEvent $event)
     {
 

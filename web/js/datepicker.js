@@ -16,19 +16,15 @@ $(document).ready(function () {
 
 
     $collectionHolder = $('ul.tickets');
-    // add a delete link to all of the existing tag form li elements
+
     $collectionHolder.find('li').each(function () {
         addTicketFormDeleteLink($(this));
     });
-    // add the "add a ticket" anchor and li to the tickets ul
+
     $collectionHolder.append($newLinkLi);
-    // count the current form inputs we have (e.g. 2), use that as the new
-    // index when inserting a new item (e.g. 2)
     $collectionHolder.data('index', $collectionHolder.find(':input').length);
     $addTicketLink.on('click', function (e) {
-        // prevent the link from creating a "#" on the URL
         e.preventDefault();
-        // add a new ticket form (see next code block)
         addTicketForm($collectionHolder, $newLinkLi);
     });
 
@@ -62,7 +58,7 @@ $(document).ready(function () {
                         if (response < 1) {
                             minTickets = 0;
                         }
-                        if (response < 10) {
+                        if (response < WarningTriger) {
                             Materialize.toast('Attention ! il ne reste que ' + response + ' tickets à cette date !', 4000, 'deep-orange darken-4 rounded');
                         }
                         if (response > 0) {
@@ -124,7 +120,7 @@ $(document).ready(function () {
                         if (response < 1) {
                             minTickets = 0;
                         }
-                        if (response < 10) {
+                        if (response < WarningTriger) {
                             Materialize.toast('Attention ! only ' + response + ' tickets left on this date !', 4000, 'deep-orange darken-4 rounded');
                         }
                         if (response > 0) {

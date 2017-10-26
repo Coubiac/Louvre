@@ -1,5 +1,9 @@
 
         {% block javascripts %}
+            <script>
+                var TicketLimit = {{ constant('AppBundle\\Entity\\Ticket::MAX_TICKETS') }};
+                var WarningTriger = {{ constant('AppBundle\\Entity\\Ticket::WARNING_TRIGER') }};
+            </script>
 
             <script type="text/javascript" src="{{ asset("js/jquery-3.2.1.min.js") }}"></script>
             <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
