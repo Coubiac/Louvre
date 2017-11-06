@@ -15,7 +15,7 @@ class Ticket
 {
 
     const MAX_TICKETS = 5; //Maximum tickets allowed in a day
-    const WARNING_TRIGER = 5; //Warning  Triger
+    const WARNING_TRIGER = 4; //Warning  Triger
 
     /**
      * @var int
