@@ -14,6 +14,9 @@ parameters:
     mailer_host: 127.0.0.1
     mailer_user: ~
     mailer_password: ~
+    mailer_auth_mode: login
+    mailer_port: 465
+    mailer_encryption: ssl
 
     # A secret key that's used to generate certain security-related tokens
     secret: d69280cf9992d20e8b671c430546fd51298dfa9e
