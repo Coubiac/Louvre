@@ -1,4 +1,4 @@
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/84a8e163-19c0-45ce-8011-f9c3ab8016cb/mini.png)](https://insight.sensiolabs.com/projects/84a8e163-19c0-45ce-8011-f9c3ab8016cb)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/84a8e163-19c0-45ce-8011-f9c3ab8016cb/mini.png)](https://insight.sensiolabs.com/projects/84a8e163-19c0-45ce-8011-f9c3ab8016cb) [![StyleCI](https://github.styleci.io/repos/97097582/shield?branch=master)](https://github.styleci.io/repos/97097582)
 
 Ce projet est le projet n°4 du parcours Openclassrooms diplômant "Chef de projet multimédia - Développement" 
 
