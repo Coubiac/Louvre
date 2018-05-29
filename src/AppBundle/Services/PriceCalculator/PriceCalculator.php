@@ -3,10 +3,11 @@
  * Created by PhpStorm.
  * User: ben
  * Date: 04/08/2017
- * Time: 08:32
+ * Time: 08:32.
  */
 
 namespace AppBundle\Services\PriceCalculator;
+
 use AppBundle\Entity\Order;
 
 class PriceCalculator
@@ -23,11 +24,9 @@ class PriceCalculator
 
     public function setTotalPrice(Order $order)
     {
-        if($order->getFullDayTicket()){
+        if ($order->getFullDayTicket()) {
             $this->priceCoef = self::FULLDAY_COEF;
-
-        }
-        else{
+        } else {
             $this->priceCoef = self::HALFDAY_COEF;
         }
 
@@ -35,17 +34,13 @@ class PriceCalculator
         $tickets = $order->getTickets();
         $dateOfVisit = $order->getDateOfVisit();
         foreach ($tickets as $ticket) {
-
             $price = 0;
             $birthdate = $ticket->getBirthdate();
-
 
             $age = $birthdate->diff($dateOfVisit)->format('%Y'); //On calcule l'age du visiteur à la date de la visite
 
             if ($age < 4) {
                 $price = self::FREE_PRICE * $this->priceCoef;
-
-
             }
             if ($age >= 4 && $age < 12) {
                 $price = self::CHILDREN_PRICE * $this->priceCoef;
@@ -56,7 +51,6 @@ class PriceCalculator
                 } else {
                     $price = self::NORMAL_PRICE * $this->priceCoef;
                 }
-
             }
             if ($age >= 60) {
                 if ($ticket->getReducedPrice()) {
@@ -68,13 +62,10 @@ class PriceCalculator
 
             $ticket->setPrice($price);
             $total += $price;
-
-
         }
 
         $order->setTotal($total);
+
         return $order;
-
-
     }
 }

@@ -19,47 +19,43 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, array(
+            ->add('email', EmailType::class, [
                 'label' => 'Your mail adress',
 
-            ))
-            ->add('dateOfVisit', DateType::class, array(
+            ])
+            ->add('dateOfVisit', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => true,
-                'attr' => array('class' => 'datepicker', 'min' => date('d-m-Y'), 'id' => 'dateOfVisit'),
+                'html5'  => true,
+                'attr'   => ['class' => 'datepicker', 'min' => date('d-m-Y'), 'id' => 'dateOfVisit'],
                 'format' => 'dd/MM/yyyy',
-            ))
-            ->add('fullDayTicket', ChoiceType::class, array(
-                'choices' => array(
-                    'Full day ticket' => true,
+            ])
+            ->add('fullDayTicket', ChoiceType::class, [
+                'choices' => [
+                    'Full day ticket'                 => true,
                     'Half day ticket (From 14 hours)' => false,
-                ),
+                ],
                 'label' => 'Please, choose a ticket type',
-                'attr' => array('class' => 'ticketType'),
+                'attr'  => ['class' => 'ticketType'],
 
-
-            ))
-            ->add('tickets', CollectionType::class, array(
-                'entry_type' => TicketType::class,
-                'allow_add' => true,
-                'prototype' => true,
-                'allow_delete' => true,
-                'label' => false,
-                'by_reference' => false,
-                'entry_options' => array(
+            ])
+            ->add('tickets', CollectionType::class, [
+                'entry_type'    => TicketType::class,
+                'allow_add'     => true,
+                'prototype'     => true,
+                'allow_delete'  => true,
+                'label'         => false,
+                'by_reference'  => false,
+                'entry_options' => [
                     'label' => false,
-                ),
-                'attr' => array(
+                ],
+                'attr' => [
                     'class' => 'ticketform',
-                ),
+                ],
 
-
-            ))
-            ->add('submit', SubmitType::class, array(
-                'attr' => array('class' => 'btn btn-large waves-effect waves-light deep-orange accent-3')
-            ));;
-
-
+            ])
+            ->add('submit', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-large waves-effect waves-light deep-orange accent-3'],
+            ]);
     }
 
     /**
@@ -67,9 +63,9 @@ class OrderType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Order'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'AppBundle\Entity\Order',
+        ]);
     }
 
     /**
@@ -79,6 +75,4 @@ class OrderType extends AbstractType
     {
         return 'appbundle_order';
     }
-
-
 }
