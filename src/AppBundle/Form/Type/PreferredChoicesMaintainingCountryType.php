@@ -14,7 +14,7 @@ class PreferredChoicesMaintainingCountryType extends AbstractType
     {
         parent::buildView($view, $form, $options);
         if ($options['preferred_choices']) {
-            $newPreferredChoices = array();
+            $newPreferredChoices = [];
             foreach ($options['preferred_choices'] as $key) {
                 $choice = $this->findChoiceView($view, $key);
                 if (!$choice) {
@@ -25,6 +25,7 @@ class PreferredChoicesMaintainingCountryType extends AbstractType
             $view->vars['preferred_choices'] = $newPreferredChoices;
         }
     }
+
     private function findChoiceView(FormView $view, $keyToFind)
     {
         foreach ($view->vars['preferred_choices'] as $choice) {
@@ -32,12 +33,13 @@ class PreferredChoicesMaintainingCountryType extends AbstractType
                 return $choice;
             }
         }
-        return null;
     }
+
     public function getParent()
     {
         return CountryType::class;
     }
+
     public function getName()
     {
         return 'country_maintaining_preferred';

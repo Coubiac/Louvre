@@ -6,14 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Ticket
+ * Ticket.
  *
  * @ORM\Table(name="ticket")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TicketRepository")
  */
 class Ticket
 {
-
     const MAX_TICKETS = 5; //Maximum tickets allowed in a day
     const WARNING_TRIGER = 4; //Warning  Triger
 
@@ -32,7 +31,6 @@ class Ticket
      * @ORM\Column(name="reduced_price", type="boolean")
      */
     private $reducedPrice;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="tickets")
@@ -53,7 +51,6 @@ class Ticket
      * @ORM\Column(name="firstname", type="string", length=255)
      */
     private $firstname;
-
 
     /**
      * @var \DateTime
@@ -77,7 +74,6 @@ class Ticket
      */
     private $price;
 
-
     /**
      * @var string
      * @ORM\Column(name="ticket_number", type="string", length=255)
@@ -87,18 +83,15 @@ class Ticket
     /**
      * Ticket constructor.
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->setTicketNumber(md5(uniqid(rand(), true)));
-
-
     }
 
-
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -106,9 +99,9 @@ class Ticket
     }
 
     /**
-     * Set reducedPrice
+     * Set reducedPrice.
      *
-     * @param boolean $reducedPrice
+     * @param bool $reducedPrice
      *
      * @return Ticket
      */
@@ -120,9 +113,9 @@ class Ticket
     }
 
     /**
-     * Get reducedPrice
+     * Get reducedPrice.
      *
-     * @return boolean
+     * @return bool
      */
     public function getReducedPrice()
     {
@@ -130,7 +123,7 @@ class Ticket
     }
 
     /**
-     * Set lastname
+     * Set lastname.
      *
      * @param string $lastname
      *
@@ -144,7 +137,7 @@ class Ticket
     }
 
     /**
-     * Get lastname
+     * Get lastname.
      *
      * @return string
      */
@@ -154,7 +147,7 @@ class Ticket
     }
 
     /**
-     * Set firstname
+     * Set firstname.
      *
      * @param string $firstname
      *
@@ -168,7 +161,7 @@ class Ticket
     }
 
     /**
-     * Get firstname
+     * Get firstname.
      *
      * @return string
      */
@@ -178,7 +171,7 @@ class Ticket
     }
 
     /**
-     * Set birthdate
+     * Set birthdate.
      *
      * @param \DateTime $birthdate
      *
@@ -192,7 +185,7 @@ class Ticket
     }
 
     /**
-     * Get birthdate
+     * Get birthdate.
      *
      * @return \DateTime
      */
@@ -202,7 +195,7 @@ class Ticket
     }
 
     /**
-     * Set order
+     * Set order.
      *
      * @param \AppBundle\Entity\Order $order
      *
@@ -216,7 +209,7 @@ class Ticket
     }
 
     /**
-     * Get order
+     * Get order.
      *
      * @return \AppBundle\Entity\Order
      */
@@ -226,7 +219,7 @@ class Ticket
     }
 
     /**
-     * Set ticketNumber
+     * Set ticketNumber.
      *
      * @param string $ticketNumber
      *
@@ -240,7 +233,7 @@ class Ticket
     }
 
     /**
-     * Get ticketNumber
+     * Get ticketNumber.
      *
      * @return string
      */
@@ -250,9 +243,9 @@ class Ticket
     }
 
     /**
-     * Set price
+     * Set price.
      *
-     * @param integer $price
+     * @param int $price
      *
      * @return Ticket
      */
@@ -264,9 +257,9 @@ class Ticket
     }
 
     /**
-     * Get price
+     * Get price.
      *
-     * @return integer
+     * @return int
      */
     public function getPrice()
     {
@@ -274,7 +267,7 @@ class Ticket
     }
 
     /**
-     * Set country
+     * Set country.
      *
      * @param string $country
      *
@@ -288,7 +281,7 @@ class Ticket
     }
 
     /**
-     * Get country
+     * Get country.
      *
      * @return string
      */
@@ -296,6 +289,4 @@ class Ticket
     {
         return $this->country;
     }
-
-
 }

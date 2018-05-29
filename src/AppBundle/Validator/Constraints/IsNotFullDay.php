@@ -16,7 +16,6 @@ class IsNotFullDay extends Constraint
         return IsNotFullDayValidator::class;
     }
 
-
     public function getTargets()
     {
         return Constraint::CLASS_CONSTRAINT;

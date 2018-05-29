@@ -2,11 +2,11 @@
 
 namespace Tests\AppBundle\PriceCalculatorTest;
 
-use DateTime;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Order;
 use AppBundle\Entity\Ticket;
 use AppBundle\Services\PriceCalculator\PriceCalculator;
+use DateTime;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class PriceCalculatorTest extends KernelTestCase
 {
@@ -18,11 +18,9 @@ class PriceCalculatorTest extends KernelTestCase
     {
         $this->order = new Order();
 
-
         $this->ticket = new Ticket();
         $this->order->addTicket($this->ticket);
         $this->priceCalculator = new PriceCalculator();
-
     }
 
     public function ticketDataProvider()
@@ -40,11 +38,8 @@ class PriceCalculatorTest extends KernelTestCase
             ['-10 years', true, false, PriceCalculator::CHILDREN_PRICE],
             ['-10 years', true, true, PriceCalculator::CHILDREN_PRICE],
 
-
-
             ['-10 years', false, false, PriceCalculator::CHILDREN_PRICE * PriceCalculator::HALFDAY_COEF],
             ['-10 years', false, true, PriceCalculator::CHILDREN_PRICE * PriceCalculator::HALFDAY_COEF],
-
 
             // Tarif Senior
             ['-80 years', true, false, PriceCalculator::SENIOR_PRICE],
@@ -52,9 +47,8 @@ class PriceCalculatorTest extends KernelTestCase
             ['-80 years', true, true, PriceCalculator::REDUCED_PRICE],
             ['-80 years', false, true, PriceCalculator::REDUCED_PRICE * PriceCalculator::HALFDAY_COEF],
 
-
             //Tarif Bébé
-            ['-3 years', true, false, PriceCalculator::FREE_PRICE]
+            ['-3 years', true, false, PriceCalculator::FREE_PRICE],
         ];
     }
 
@@ -71,9 +65,6 @@ class PriceCalculatorTest extends KernelTestCase
 
         $this->order = $this->priceCalculator->setTotalPrice($this->order);
 
-
         $this->assertEquals($expected, $this->order->getTotal());
-
     }
-
 }

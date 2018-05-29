@@ -16,5 +16,3 @@ class IsNotHolliday extends Constraint
         return IsNotHollidayValidator::class;
     }
 }
-
-

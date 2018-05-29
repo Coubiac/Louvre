@@ -3,15 +3,15 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Services\PriceCalculator\PriceCalculator;
+use AppBundle\Validator\Constraints as LouvreAssert;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Validator\Constraints as LouvreAssert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * Order
+ * Order.
  *
  * @ORM\Table(name="visit_order")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OrderRepository")
@@ -28,7 +28,6 @@ class Order
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
 
     /**
      * @var Ticket[]
@@ -67,8 +66,6 @@ class Order
      */
     private $fullDayTicket;
 
-
-
     /**
      * @var string
      * @Assert\Email()
@@ -82,9 +79,6 @@ class Order
      */
     private $orderNumber;
 
-
-
-
     /**
      * @var int
      *
@@ -92,23 +86,21 @@ class Order
      */
     private $total;
 
-
-
     /**
      * Order constructor.
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->setTotal(0);
-        $this->setOrderNumber(strtoupper(uniqid("CMD")));
+        $this->setOrderNumber(strtoupper(uniqid('CMD')));
         $this->setPurchaseDate(new \Datetime());
         $this->tickets = new ArrayCollection();
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -116,7 +108,7 @@ class Order
     }
 
     /**
-     * Set orderNumber
+     * Set orderNumber.
      *
      * @param string $orderNumber
      *
@@ -130,7 +122,7 @@ class Order
     }
 
     /**
-     * Get orderNumber
+     * Get orderNumber.
      *
      * @return string
      */
@@ -140,7 +132,7 @@ class Order
     }
 
     /**
-     * Set purchaseDate
+     * Set purchaseDate.
      *
      * @param \DateTime $purchaseDate
      *
@@ -154,7 +146,7 @@ class Order
     }
 
     /**
-     * Get purchaseDate
+     * Get purchaseDate.
      *
      * @return \DateTime
      */
@@ -164,7 +156,7 @@ class Order
     }
 
     /**
-     * Set dateOfVisit
+     * Set dateOfVisit.
      *
      * @param \DateTime $dateOfVisit
      *
@@ -178,7 +170,7 @@ class Order
     }
 
     /**
-     * Get dateOfVisit
+     * Get dateOfVisit.
      *
      * @return \DateTime
      */
@@ -188,9 +180,9 @@ class Order
     }
 
     /**
-     * Set fullDayTicket
+     * Set fullDayTicket.
      *
-     * @param boolean $fullDayTicket
+     * @param bool $fullDayTicket
      *
      * @return Order
      */
@@ -202,9 +194,9 @@ class Order
     }
 
     /**
-     * Get fullDayTicket
+     * Get fullDayTicket.
      *
-     * @return boolean
+     * @return bool
      */
     public function getFullDayTicket()
     {
@@ -212,7 +204,7 @@ class Order
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -226,7 +218,7 @@ class Order
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -236,9 +228,9 @@ class Order
     }
 
     /**
-     * Set total
+     * Set total.
      *
-     * @param integer $total
+     * @param int $total
      *
      * @return Order
      */
@@ -250,9 +242,9 @@ class Order
     }
 
     /**
-     * Get total
+     * Get total.
      *
-     * @return integer
+     * @return int
      */
     public function getTotal()
     {
@@ -260,7 +252,7 @@ class Order
     }
 
     /**
-     * Add ticket
+     * Add ticket.
      *
      * @param \AppBundle\Entity\Ticket $ticket
      *
@@ -275,7 +267,7 @@ class Order
     }
 
     /**
-     * Remove ticket
+     * Remove ticket.
      *
      * @param \AppBundle\Entity\Ticket $ticket
      */
@@ -285,7 +277,7 @@ class Order
     }
 
     /**
-     * Get tickets
+     * Get tickets.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -294,7 +286,6 @@ class Order
         return $this->tickets;
     }
 
-
     /**
      * @Assert\Callback
      */
@@ -302,8 +293,6 @@ class Order
     {
         $priceCalculator = new PriceCalculator();
         $order = $priceCalculator->setTotalPrice($this);
-
-
 
         if ($order->getTotal() == 0 && $order->getTickets()->count() !== 0) {
             $context->buildViolation('Children must be accompanied')

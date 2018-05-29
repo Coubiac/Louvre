@@ -2,21 +2,18 @@
 
 namespace AcmeBundle\Tests\Validator\Constraints;
 
-
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Validator\Constraints\IsNotHolliday;
 use AppBundle\Validator\Constraints\IsNotHollidayValidator;
 use DateTime;
-
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Exercises SomeConstraintValidator.
  */
 class IsNotHollidayValidatorTest extends KernelTestCase
 {
-
-    public function HollidayDateDataProvider(){
-
+    public function HollidayDateDataProvider()
+    {
         return [
             ['2018-01-01 00:00:00'], // New Years Day
             ['2018-05-01 00:00:00'], // French Labor Day
@@ -28,10 +25,9 @@ class IsNotHollidayValidatorTest extends KernelTestCase
             ['2018-08-15 00:00:00'], // Assomption
             ['2018-11-01 00:00:00'], // All soul day
             ['2018-11-11 00:00:00'], // WW1 Victory
-            ['2018-12-25 00:00:00']  // Christmas
+            ['2018-12-25 00:00:00'],  // Christmas
         ];
     }
-
 
     /**
      * Configure a IsNotHollidayValidator.
@@ -45,32 +41,26 @@ class IsNotHollidayValidatorTest extends KernelTestCase
         // mock the violation builder
         $builder = $this->getMockBuilder('Symfony\Component\Validator\Violation\ConstraintViolationBuilder')
             ->disableOriginalConstructor()
-            ->setMethods(array('addViolation'))
-            ->getMock()
-        ;
+            ->setMethods(['addViolation'])
+            ->getMock();
 
         // mock the validator context
         $context = $this->getMockBuilder('Symfony\Component\Validator\Context\ExecutionContext')
             ->disableOriginalConstructor()
-            ->setMethods(array('buildViolation'))
-            ->getMock()
-        ;
+            ->setMethods(['buildViolation'])
+            ->getMock();
 
         if ($expectedMessage) {
             $builder->expects($this->once())
-                ->method('addViolation')
-            ;
+                ->method('addViolation');
 
             $context->expects($this->once())
                 ->method('buildViolation')
                 ->with($this->equalTo($expectedMessage))
-                ->will($this->returnValue($builder))
-            ;
-        }
-        else {
+                ->will($this->returnValue($builder));
+        } else {
             $context->expects($this->never())
-                ->method('buildViolation')
-            ;
+                ->method('buildViolation');
         }
 
         // initialize the validator with the mocked context
@@ -82,7 +72,8 @@ class IsNotHollidayValidatorTest extends KernelTestCase
     }
 
     /**
-     * On vérifie que les Jours fériés sont rejetés
+     * On vérifie que les Jours fériés sont rejetés.
+     *
      * @dataProvider HollidayDateDataProvider
      */
     public function testDate($date)

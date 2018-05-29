@@ -2,34 +2,30 @@
 
 namespace AcmeBundle\Tests\Validator\Constraints;
 
-
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Validator\Constraints\IsNotClosingDay;
 use AppBundle\Validator\Constraints\IsNotClosingDayValidator;
 use DateTime;
-
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class IsNotClosingDayValidatorTest extends KernelTestCase
 {
-
-    public function closingDayDataProvider(){
-
+    public function closingDayDataProvider()
+    {
         return [
             ['2018-01-14 00:00:00'], // Sunday
-            ['2018-01-16 00:00:00']  // Tuesday
+            ['2018-01-16 00:00:00'],  // Tuesday
         ];
     }
 
-    public function openDayDataProvider(){
-
+    public function openDayDataProvider()
+    {
         return [
             ['2018-01-15 00:00:00'], //Monday
             ['2018-01-17 00:00:00'], //Wednesday
             ['2018-01-18 00:00:00'], //Thursday
             ['2018-01-19 00:00:00'], //Friday
-            ['2018-01-20 00:00:00']  //Saturday
+            ['2018-01-20 00:00:00'],  //Saturday
         ];
-
     }
 
     /**
@@ -44,32 +40,26 @@ class IsNotClosingDayValidatorTest extends KernelTestCase
         // mock the violation builder
         $builder = $this->getMockBuilder('Symfony\Component\Validator\Violation\ConstraintViolationBuilder')
             ->disableOriginalConstructor()
-            ->setMethods(array('addViolation'))
-            ->getMock()
-        ;
+            ->setMethods(['addViolation'])
+            ->getMock();
 
         // mock the validator context
         $context = $this->getMockBuilder('Symfony\Component\Validator\Context\ExecutionContext')
             ->disableOriginalConstructor()
-            ->setMethods(array('buildViolation'))
-            ->getMock()
-        ;
+            ->setMethods(['buildViolation'])
+            ->getMock();
 
         if ($expectedMessage) {
             $builder->expects($this->once())
-                ->method('addViolation')
-            ;
+                ->method('addViolation');
 
             $context->expects($this->once())
                 ->method('buildViolation')
                 ->with($this->equalTo($expectedMessage))
-                ->will($this->returnValue($builder))
-            ;
-        }
-        else {
+                ->will($this->returnValue($builder));
+        } else {
             $context->expects($this->never())
-                ->method('buildViolation')
-            ;
+                ->method('buildViolation');
         }
 
         // initialize the validator with the mocked context
@@ -81,7 +71,8 @@ class IsNotClosingDayValidatorTest extends KernelTestCase
     }
 
     /**
-     * On vérifie que les jours de fermeture sont interceptées par le validator
+     * On vérifie que les jours de fermeture sont interceptées par le validator.
+     *
      * @dataProvider closingDayDataProvider
      */
     public function testOnClosingDay($date)
@@ -92,8 +83,10 @@ class IsNotClosingDayValidatorTest extends KernelTestCase
 
         $validator->validate($testDate, $constraint);
     }
+
     /**
      * On vérifie qu'une date valide passe la validator.
+     *
      * @dataProvider openDayDataProvider
      */
     public function testOnOpenDay($date)
